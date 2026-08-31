@@ -30,6 +30,10 @@ all. This code is broken, very messy, and contains plenty of bugs inside
 of it -- even though I tried my absolute best to iron out the pointer 
 limits and structural loops.
 
+Despite me giving up on Vernichtung, you can freely modify it, fork it, 
+and change it, which is the exact reason why I am releasing the source 
+code!
+
 THE ORIGINAL VISION (What it was supposed to look like):
 --------------------------------------------------------
 Vernichtung was designed to be a "Chocolate-Crispy Hybrid." If I hadn't 
@@ -42,18 +46,18 @@ I had in mind for the engine:
 * Uncapped rendering framerate with interpolation and optional vertical 
   synchronization (VSync) tied to the screen refresh rate.
 * NO DOS LIMITS -- it is completely limit-removing.
-* MIDI support via Nuked OPL3 (Licensed under LGPL-2.1, so make sure 
-  to use Dynamic Linking if you want to add for your project).
+* MIDI support via Nuked-OPL3 (and via Dynamic Linking)
 * The rest would be Vanilla (meaning there is no "crispness" menu).
 
 SOME IDEAS FOR THE COMMUNITY:
 -----------------------------
-* Maintain this project (though I know you are probably going to ignore this!).
+* Maintain this project (though I know you are probably going to ignore this).
 * Rip out the binary WAD parser or data streams and use them as an 
   un-bloated systems baseline for your own tools.
 * Fork it and use it as a foundation for your own engine projects.
 * Finish the visual engine by adding rendering features -- transparency, looking up/down, slopes, etc.
 * Add modern gameplay features -- weapons, jumping, ducking, flying, etc.
+* MIDI support
 * Create a client/server-based multiplayer network.
 * Overhaul the renderer to make this into actual 3D instead of 2.5D.
 
