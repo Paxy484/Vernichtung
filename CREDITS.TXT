@@ -1,0 +1,90 @@
+I would like thank these people for their hard work:
+
+* <stdio.h>, <stdlib.h>, <string.h>, <math.h>, <time.h>
+  Architects: Dennis Ritchie & Brian Kernighan (AT&T Bell Laboratories)
+  Standardized by the ANSI / ISO C Specification Committees.
+  Provides the primitive foundation for POSIX data streams, pointer math,
+  and trigonometric camera projections.
+
+* <stdint.h>
+  Architects: ISO/IEC JTC 1/SC 22/WG14 Committee (C99 Specification)
+  Provides exact, invariant integer bit-widths (uint32_t, int16_t) to
+  guarantee memory safety during binary WAD lump parsing loops.
+
+* <SDL2/SDL.h>
+  Architects: Sam Lantinga (Loki Software / Valve Corporation) 
+              and contributors.
+  Licensed under the zlib License.
+  This software is provided 'as-is', without any express or implied warranty.
+  Origin must not be misrepresented; altered source versions must be plainly
+  marked as such, and this notice may not be removed or altered from any 
+  source distribution. Provides the universal multimedia abstraction layer 
+  to pipe software-rendered CPU framebuffer arrays straight to native OS 
+  graphics contexts.
+
+* Clang / LLD / LLVM Assembler
+  Architects: LLVM Community and contributors.
+  Licensed under Apache License v2.0 with LLVM Exceptions.
+  Processes advanced compiler optimizations, code diagnostics, and quick
+  binary linking mapping for modern system frameworks.
+
+* GCC / GNU Assembler / GNU Linker
+  Architects: Free Software Foundation and contributors.
+  License: GPLv3+ and GPLv3+ with GCC Runtime Library Exception.
+  Provides the foundational compilation infrastructure for POSIX targets
+  and legacy software environment mappings.
+
+* GNU Make
+  Architects: Richard Stallman, Roland McGrath, and the FSF Contributors.
+  Licensed under the GNU General Public License v3+.
+  Provides the advanced build automation loop and dependency tracking structures
+  used to parse Makefiles natively on Linux and MSYS2 environments.
+
+* BSD Make (bmake / pmake)
+  Architects: Adam de Boor, Simon Gerraty, and the BSD Contributors.
+  Licensed under the permissive 3-Clause BSD License.
+  Provides the strictly POSIX-compliant, lightweight build automation engine
+  used to drive native compilation trees across FreeBSD, NetBSD, and OpenBSD.
+
+* Linux Kernel
+  Architects: Linus Torvalds and Contributors.
+  Licensed under the GPLv2-only.
+  Provides the foundational operating system kernel that Dave Taylor used to 
+  port DOOM, allowing the creation of this project and powering the modern 
+  computing world.
+
+* Git
+  Architects: Linus Torvalds and Contributors.
+  Licensed under the GPLv2-only.
+  Provides the decentralized version control architecture used by systems 
+  programmers to develop software collaboratively and distribute it to 
+  platforms like GitLab.
+
+* The DOOM Engine
+  Architects: id Software (John Carmack, John Romero, Adrian Carmack, 
+              Kevin Cloud) and contributors.
+  Original Source Released under GNU General Public License v2.0 (and Doom Source License before).
+  Designed the foundational 2.5D recursive binary space partitioning (BSP) 
+  tree traversal layouts, vertical column wall rendering logic, and WAD 
+  binary asset indexing pipelines.
+
+* The DOOM Sub-System & Source Preparation
+  Architects: Dave Taylor (id Software) & Bernd Kreimeier.
+  Dave Taylor engineered the native 1994 Linux port that saved the codebase 
+  from proprietary DOS library locks. Bernd Kreimeier meticulously cleaned, 
+  restructured, and verified the source pipeline for its historic 1997 
+  public release.
+
+* MSYS2 Software Distribution & POSIX Build Environment
+  Architects: Alexey Pavlov, Ray Donnelly, and the MSYS2 Team.
+  Licensed under various Open Source Licenses (GPLv3, BSD, MIT).
+  Provides the foundational software bridging layer, Pacman subsystem, 
+  and CLANG64 target environments to allow native Unix shell tools and 
+  Makefiles to compile directly into native standalone Windows binaries.
+
+===========================================================================
+                                THANK YOU!
+===========================================================================
+
+  And most importantly, THANK YOU to you, the programmer, the tester, the 
+  person, any person at all!

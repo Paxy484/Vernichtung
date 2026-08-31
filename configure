@@ -1,0 +1,88 @@
+#!/bin/sh
+
+CC="cc"
+printf "checking for cc... "
+if command -v cc >/dev/null 2>&1; then
+    echo "yes"
+else
+    echo "no"
+    echo "[ERROR] 'cc' not found." >&2
+    exit 1
+fi
+
+# 2. Comprehensive validation loop over every single required layout header
+for header in stdio.h stdlib.h stdint.h string.h strings.h math.h time.h SDL2/SDL.h; do
+    printf "checking for %s... " "$header"
+    
+    # Check if the system compiler can pre-process the header successfully
+    if echo "#include <$header>" | cc -E - >/dev/null 2>&1; then
+        echo "yes"
+    else
+        echo "no"
+        echo "[ERROR] dependency <$header> is missing, How?" >&2
+        
+        # Give a helpful installation hint if SDL2 is the specific failure point
+        if [ "$header" = "SDL2/SDL.h" ]; then
+            echo "[HINT] If you are using Debian(-based) you might installed 'sdl2' instead 'libsdl2-dev' in APT." >&2
+        fi
+        exit 1
+    fi
+done
+
+# 3. Double-check for the automated build-flags query utility
+printf "checking for sdl2-config... "
+if command -v sdl2-config >/dev/null 2>&1; then
+    echo "yes"
+    SDL_CFLAGS=$(sdl2-config --cflags)
+    SDL_LIBS=$(sdl2-config --libs)
+else
+    # Lean fallback paths to support native MSYS2 target profile trees
+    OS=$(uname -s 2>/dev/null || echo "Windows")
+    case "$OS" in
+        *MINGW*|*MSYS*|Windows)
+            echo "no"
+            SDL_CFLAGS="-I/${MSYSTEM_PREFIX}/include/SDL2"
+            SDL_LIBS="-L/${MSYSTEM_PREFIX}/lib -lSDL2"
+            ;;
+        *)
+            echo "no"
+            echo "[ERROR] 'sdl2-config' build automation tracking utility not found." >&2
+            exit 1
+            ;;
+    esac
+fi
+
+# 4. Set final cross-platform flags and target layouts
+EXE=""
+CFLAGS="-Wall -Wextra -std=c99 $SDL_CFLAGS"
+LIBS="$SDL_LIBS -lm"
+
+# Append native standalone executable extensions inside Windows environments
+case "$(uname -s 2>/dev/null)" in
+    *MINGW*|*MSYS*)
+        EXE=".exe"
+        LIBS="$LIBS -mwindows"
+        ;;
+esac
+
+# 5. Output the completed local build rules Makefile
+printf "configure: creating Makefile... "
+cat << EOF > Makefile
+CC = $CC
+CFLAGS = $CFLAGS
+LIBS = $LIBS
+TARGET = vernichtung$EXE
+
+SRC = main.c
+
+all: \$(TARGET)
+
+\$(TARGET): \$(SRC)
+	\$(CC) \$(CFLAGS) \$(SRC) -o \$(TARGET) \$(LIBS)
+
+clean:
+	rm -f \$(TARGET) Makefile
+
+.PHONY: all clean
+EOF
+echo "done"

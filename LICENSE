@@ -1,0 +1,197 @@
+PAX PUBLIC LICENSE VERSION 2.0
+
+0. Definitions.
+
+   "License" shall mean the terms and conditions for use, reproduction, and 
+   distribution as defined by Sections 0 through 7 of this document.
+
+   "Licensor" shall mean the copyright owner or entity authorized by the 
+   copyright owner that is granting the License.
+
+   "Legal Entity" shall mean the union of the acting entity and all other 
+   entities that control, are controlled by, or are under common control with 
+   that entity. For the purposes of this definition, "control" means (i) the 
+   power, direct or indirect, to cause the direction or management of such 
+   entity, whether by contract or otherwise, or (ii) ownership of fifty percent 
+   (50%) or more of the outstanding shares, or (iii) beneficial ownership of 
+   such entity.
+
+   "You" (or "Your") shall mean an individual or Legal Entity exercising 
+   permissions granted by this License.
+
+   "Work" (or "Software" or "Program") shall mean the work of authorship in 
+   any executable or non-executable form—including but not limited to software 
+   source code, object code, binary code, bytecode, scripts, data files, build-
+   automation tools, documentation, and configuration files—whether in Source 
+   or Object (or Binary) form, made available under the License, as indicated 
+   by a copyright notice that is included in or attached to the work.
+
+   "Source" form shall mean the preferred form for making modifications, 
+   including but not limited to software source code, documentation source, 
+   and configuration files.
+
+   "Object" (or "Binary") form shall mean any form resulting from mechanical 
+   transformation or translation of a Source form, including but not limited 
+   to compiled object code, executable binaries, bytecode, generated 
+   documentation, and conversions to other media types.
+
+   "Derivative Works" shall mean any work, whether in Source or Object (or 
+   Binary) form, that is based on (or derived from) the Work and for which the 
+   editorial revisions, annotations, elaborations, or other modifications 
+   represent, as a whole, an original work of authorship. For the purposes of 
+   this License, Derivative Works shall not include works that remain separable 
+   from, or merely link (or bind by name) to the interfaces of, the Work and 
+   Derivative Works thereof.
+
+   "Contribution" shall mean any work of authorship, including the original 
+   version of the Work and any modifications or additions to that Work or 
+   Derivative Works thereof, that is intentionally submitted to Licensor for 
+   inclusion in the Work by the copyright owner or by an individual or Legal 
+   Entity authorized to submit on behalf of the copyright owner. For the 
+   purposes of this definition, "submitted" means any form of electronic, 
+   verbal, or written communication sent to the Licensor or its representatives, 
+   including but not limited to communication on electronic mailing lists, 
+   source code control systems, and issue tracking systems that are managed 
+   by, or on behalf of, the Licensor for the purpose of discussing and 
+   improving the Work, but excluding communication that is conspicuously 
+   marked or otherwise designated in writing by the copyright owner as "Not a 
+   Contribution."
+
+   "Contributor" shall mean Licensor and any individual or Legal Entity on 
+   behalf of whom a Contribution has been received by Licensor and 
+   subsequently incorporated within the Work.
+
+   "Combined Software" shall mean any work formed by combining or linking 
+   compiled or source forms of this Work with software that is licensed 
+   under the GNU General Public License Version 2 (GPLv2) or the GNU Lesser 
+   General Public License Version 2.1 (LGPLv2.1).
+
+
+1. Grant of Software License.
+
+   Subject to the terms and conditions of this License, permission is hereby 
+   granted, free of charge, to any person obtaining a copy of this software 
+   and associated documentation files (the "Software"), to deal in the 
+   Software without restriction, including without limitation the rights to 
+   use, copy, modify, merge, publish, distribute, and/or sell copies of the 
+   Software, and to permit persons to whom the Software is furnished to do so.
+
+
+2. Grant of Patent License.
+
+   Subject to the terms and conditions of this License, each Contributor hereby 
+   grants to You a perpetual, worldwide, non-exclusive, no-charge, royalty-free, 
+   irrevocable (except as stated in this section) patent license to make, have 
+   made, use, offer to sell, sell, import, and otherwise transfer the Work, 
+   where such license applies only to those patent claims licensable by such 
+   Contributor that are necessarily infringed by their Contribution(s) alone 
+   or by combination of their Contribution(s) with the Work to which such 
+   Contribution(s) was submitted.
+   
+   If You institute patent litigation against any entity (including a 
+   cross-claim or counterclaim in a lawsuit) alleging that the Work or a 
+   Contribution incorporated within the Work constitutes direct or 
+   contributory patent infringement, then any patent licenses granted to You 
+   under this License for that Work shall terminate as of the date such 
+   litigation is filed.
+
+
+3. Redistribution & Termination.
+
+   You may reproduce and distribute copies of the Work or Derivative Works 
+   thereof in any medium, with or without modifications, and in Source or 
+   Object (or Binary) form, provided that You meet the following conditions:
+
+   (a) If You distribute the Work or Derivative Works thereof in Source form, 
+       You must retain all copyright, patent, trademark, and attribution 
+       notices from the Source form of the Work, and give any other 
+       recipients a copy of this License; and
+
+   (b) If You distribute the Work or Derivative Works thereof in Object (or 
+       Binary) form, You must reproduce the copyright notice, this License, 
+       and the disclaimer of warranty in the documentation and/or other 
+       materials provided with the distribution; and
+
+   (c) You must cause any modified files to carry prominent notices stating 
+       that You changed the files.
+
+   Any failure to comply with the conditions of this Section shall result in 
+   the automatic and immediate termination of all rights and licenses granted 
+   to You under this License.
+   
+   However, if You cure Your noncompliance with the conditions of this Section 
+   within thirty (30) days of becoming aware of the violation, Your rights 
+   under this License shall be reinstated retroactively and prospectively, 
+   provided that You have not previously received a notice of noncompliance 
+   for the same Work from the Licensor. For the avoidance of doubt, this 
+   cure period does not apply to, modify, or reinstate any licenses 
+   terminated under Section 2 (Grant of Patent License).
+
+
+4. Trademark & Endorsement.
+
+   This License does not grant permission to use the trade names, trademarks, 
+   service marks, or product names of the Licensor, except as required for 
+   reasonable and customary use in describing the origin of the Work. Neither 
+   the name of the Licensor nor the names of its contributors may be used to 
+   endorse or promote products derived from this Software without specific 
+   prior written permission.
+
+
+5. Disclaimer of Warranty.
+
+   THERE IS NO WARRANTY FOR THE WORK, TO THE EXTENT PERMITTED BY APPLICABLE 
+   LAW. EXCEPT WHEN OTHERWISE STATED IN WRITING THE COPYRIGHT HOLDERS AND/OR 
+   OTHER PARTIES PROVIDE THE WORK "AS IS" WITHOUT WARRANTY OF ANY KIND, 
+   EITHER EXPRESSED OR IMPLIED, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED 
+   WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE 
+   ENTIRE RISK AS TO THE QUALITY AND PERFORMANCE OF THE WORK IS WITH YOU. 
+   SHOULD THE WORK PROVE DEFECTIVE, YOU ASSUME THE COST OF ALL NECESSARY 
+   SERVICING, REPAIR, OR CORRECTION.
+
+
+6. Limitation of Liability.
+
+   IN NO EVENT UNLESS REQUIRED BY APPLICABLE LAW OR AGREED TO IN WRITING WILL 
+   ANY COPYRIGHT HOLDER, OR ANY OTHER PARTY WHO MODIFIES AND/OR CONVEYS THE 
+   WORK AS PERMITTED ABOVE, BE LIABLE TO YOU FOR DAMAGES, INCLUDING ANY 
+   GENERAL, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES ARISING OUT OF THE 
+   USE OR INABILITY TO USE THE WORK (INCLUDING BUT NOT LIMITED TO LOSS OF 
+   DATA OR DATA BEING RENDERED INACCURATE OR LOSSES SUSTAINED BY YOU OR THIRD 
+   PARTIES OR A FAILURE OF THE WORK TO OPERATE WITH ANY OTHER PROGRAMS), 
+   EVEN IF SUCH HOLDER OR OTHER PARTY HAS BEEN ADVISED OF THE POSSIBILITY OF 
+   SUCH DAMAGES.
+
+
+7. Combined Software
+
+   In addition, if You create, distribute, or use Combined Software, You may 
+   automatically, retroactively, and prospectively choose to deem waived or 
+   otherwise exclude Section 2 (Grant of Patent License) of this License in 
+   its entirety, solely to the extent necessary to eliminate any conflict with 
+   the conditions of the GPLv2 or LGPLv2.1, but only with respect to the 
+   Combined Software itself. The patent licenses granted under Section 2 shall 
+   remain fully effective and un-waived for all other standalone distributions 
+   or uses of the Work or its Contributions.
+
+---
+
+APPENDIX: How to apply the Pax Public License to your work.
+
+To apply the Pax Public License to your work, attach the following boilerplate notice, with the fields enclosed by brackets "[]" replaced with your own identifying information. (Don't include the brackets!) The text should be enclosed in the appropriate comment syntax for the file format. We also recommend that a file or class name and description of purpose be included on the same "printed page" as the copyright notice for easier identification within third-party archives.
+
+Copyright [yyyy] [name of copyright owner]
+
+Licensed under the Pax Public License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+
+You may obtain a copy of the full License text within the Source or Object 
+(or Binary) form materials provided with this distribution (typically in a 
+LICENSE file, or LICENSE-PAX if there is more than one file named "LICENSE"), 
+or at: https://gitlab.com/pax-project/pax-public-license/-/blob/main/LICENSE
