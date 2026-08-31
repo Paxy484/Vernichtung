@@ -30,8 +30,8 @@ all. This code is broken, very messy, and contains plenty of bugs inside
 of it -- even though I tried my absolute best to iron out the pointer 
 limits and structural loops.
 
-HOW IT GONNA BE LOOKED LIKE:
-----------------------------
+THE ORIGINAL VISION:
+--------------------
 Vernichtung was designed to be a "Chocolate-Crispy Hybrid":
 
 * Enhanced 640x400 display resolution.
@@ -42,17 +42,17 @@ Vernichtung was designed to be a "Chocolate-Crispy Hybrid":
 * NO DOS LIMITS -- it is completely limit-removing.
 * MIDI support via Nuked OPL3 (Licensed under LGPL-2.1, so make sure 
   to use Dynamic Linking).
-* The rest is Vanilla (that means there no "crispness" menu).
+* The rest is Vanilla (that means there is no "crispness" menu).
 
-SOME IDEAS:
------------
+SOME PROJECT IDEAS:
+-------------------
 * Maintain this project (but I know you are probably going to ignore this).
 * Rip out the binary WAD parser or data streams and use them as an 
   un-bloated systems baseline for your own tools.
 * Fork it and use for your projects.
 * Add some rendering features -- transparency, look up / down, slopes, etc.
 * Add some features -- weapons, jumping, ducking, flying, etc.
-* Create a client / server based internet.
+* Create a client / server based internet multiplayer system.
 * Make this into actual 3D instead of 2.5D.
 
 And that is all.
