@@ -1,5 +1,5 @@
-Well, Ladies and Gentlemen!
-here it is: Vernichtung at your hands!
+Well, Folks,
+Here it is: Vernichtung at your hands!
 
 WHAT IS IT?
 -----------
@@ -16,8 +16,8 @@ The GPL virality wound up being a net negative, and more value would
 have come from BSD. My partners would never have gone for it, though."
 - John Carmack, 7/6/2021
 
-No, I dont hate copyleft, i only hate GPLv3 and AGPLv3 because they go 
-to hardware level and network level, in fact, i love GPL-2.0, MPL-2.0 
+No, I don't hate copyleft. I only hate GPLv3 and AGPLv3 because they go 
+to the hardware level and network level. In fact, I love GPL-2.0, MPL-2.0, 
 and LGPL-2.1.
 
 Many thanks to the people in CREDITS for their hard work.
@@ -30,9 +30,11 @@ all. This code is broken, very messy, and contains plenty of bugs inside
 of it -- even though I tried my absolute best to iron out the pointer 
 limits and structural loops.
 
-THE ORIGINAL VISION:
---------------------
-Vernichtung was designed to be a "Chocolate-Crispy Hybrid":
+THE ORIGINAL VISION (What it was supposed to look like):
+--------------------------------------------------------
+Vernichtung was designed to be a "Chocolate-Crispy Hybrid." If I hadn't 
+given up after months of trying to fix bugs, this is the architecture 
+I had in mind for the engine:
 
 * Enhanced 640x400 display resolution.
 * Widescreen rendering using all available horizontal space on modern
@@ -41,26 +43,27 @@ Vernichtung was designed to be a "Chocolate-Crispy Hybrid":
   synchronization (VSync) tied to the screen refresh rate.
 * NO DOS LIMITS -- it is completely limit-removing.
 * MIDI support via Nuked OPL3 (Licensed under LGPL-2.1, so make sure 
-  to use Dynamic Linking).
-* The rest is Vanilla (that means there is no "crispness" menu).
+  to use Dynamic Linking if you want to add for your project).
+* The rest would be Vanilla (meaning there is no "crispness" menu).
 
-SOME PROJECT IDEAS:
--------------------
-* Maintain this project (but I know you are probably going to ignore this).
+SOME IDEAS FOR THE COMMUNITY:
+-----------------------------
+* Maintain this project (though I know you are probably going to ignore this!).
 * Rip out the binary WAD parser or data streams and use them as an 
   un-bloated systems baseline for your own tools.
-* Fork it and use for your projects.
-* Add some rendering features -- transparency, look up / down, slopes, etc.
-* Add some features -- weapons, jumping, ducking, flying, etc.
-* Create a client / server based internet multiplayer system.
-* Make this into actual 3D instead of 2.5D.
+* Fork it and use it as a foundation for your own engine projects.
+* Finish the visual engine by adding rendering features -- transparency, looking up/down, slopes, etc.
+* Add modern gameplay features -- weapons, jumping, ducking, flying, etc.
+* Create a client/server-based multiplayer network.
+* Overhaul the renderer to make this into actual 3D instead of 2.5D.
 
 And that is all.
 
-I dont know how many people are gonna look at Vernichtung, but i think at 
-least 1 person is gonna look at it, witch is me!
-Ok sorry but stay safe out there
+I don't know how many people are going to look at Vernichtung, but I think at 
+least one person is going to look at it, which is me!
 
-Have Fun.
+Ok, sorry, but stay safe out there.
+
+Have fun.
 
 - Rafael, 8/31/2026
