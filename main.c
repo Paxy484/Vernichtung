@@ -10,6 +10,8 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 
+SPDX-License-Identifier: LicenseRef-Pax-3.0
+
 You may obtain a copy of the full License text within the Source or Object 
 (or Binary) form materials provided with this distribution (typically in a 
 "LICENSE" file, or "LICENSE-PAX" if there is more than one file named "LICENSE").
