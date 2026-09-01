@@ -1,4 +1,4 @@
-PAX PUBLIC LICENSE VERSION 2.0
+PAX PUBLIC LICENSE VERSION 3.0
 
 0. Definitions.
 
@@ -70,22 +70,22 @@ PAX PUBLIC LICENSE VERSION 2.0
 1. Grant of Software License.
 
    Subject to the terms and conditions of this License, permission is hereby 
-   granted, free of charge, to any person obtaining a copy of this software 
-   and associated documentation files (the "Software"), to deal in the 
-   Software without restriction, including without limitation the rights to 
-   use, copy, modify, merge, publish, distribute, and/or sell copies of the 
-   Software, and to permit persons to whom the Software is furnished to do so.
+   granted, free of charge, to any person obtaining a copy of the Work, 
+   to use, copy, modify, merge, publish, distribute, and/or sell copies of 
+   the Work, and to permit persons to whom the Work is furnished to do so, 
+   provided that any downstream distribution of the Work or portions thereof 
+   complies with the conditions set forth in Section 3.
 
 
 2. Grant of Patent License.
 
    Subject to the terms and conditions of this License, each Contributor hereby 
    grants to You a perpetual, worldwide, non-exclusive, no-charge, royalty-free, 
-   irrevocable (except as stated in this section) patent license to make, have 
-   made, use, offer to sell, sell, import, and otherwise transfer the Work, 
-   where such license applies only to those patent claims licensable by such 
-   Contributor that are necessarily infringed by their Contribution(s) alone 
-   or by combination of their Contribution(s) with the Work to which such 
+   irrevocable (except as stated in this section and Section 7) patent license 
+   to make, have made, use, offer to sell, sell, import, and otherwise transfer 
+   the Work, where such license applies only to those patent claims licensable 
+   by such Contributor that are necessarily infringed by their Contribution(s) 
+   alone or by combination of their Contribution(s) with the Work to which such 
    Contribution(s) was submitted.
    
    If You institute patent litigation against any entity (including a 
@@ -96,36 +96,36 @@ PAX PUBLIC LICENSE VERSION 2.0
    litigation is filed.
 
 
-3. Redistribution & Termination.
+3. Redistribution.
 
    You may reproduce and distribute copies of the Work or Derivative Works 
    thereof in any medium, with or without modifications, and in Source or 
-   Object (or Binary) form, provided that You meet the following conditions:
+   Object (or Binary) form, provided that You meet the following conditions 
+   with respect to the Work or portions of the Work contained therein:
 
-   (a) If You distribute the Work or Derivative Works thereof in Source form, 
-       You must retain all copyright, patent, trademark, and attribution 
-       notices from the Source form of the Work, and give any other 
-       recipients a copy of this License; and
+   (a) You must retain, in the Source form of any Derivative Works that You 
+       distribute, all copyright, patent, trademark, and attribution 
+       notices from the Source form of the Work (regardless of any waiver 
+       exercised under Section 7), and give any other recipients a copy 
+       of this License; and
 
-   (b) If You distribute the Work or Derivative Works thereof in Object (or 
-       Binary) form, You must reproduce the copyright notice, this License, 
-       and the disclaimer of warranty in the documentation and/or other 
-       materials provided with the distribution; and
+   (b) If You distribute the Work or portions thereof in Object (or Binary) 
+       form, You must reproduce the copyright notice, this License, and the 
+       disclaimer of warranty in the documentation and/or other materials 
+       provided with the distribution; and
 
    (c) You must cause any modified files to carry prominent notices stating 
        that You changed the files.
 
    Any failure to comply with the conditions of this Section shall result in 
-   the automatic and immediate termination of all rights and licenses granted 
-   to You under this License.
-   
-   However, if You cure Your noncompliance with the conditions of this Section 
-   within thirty (30) days of becoming aware of the violation, Your rights 
-   under this License shall be reinstated retroactively and prospectively, 
-   provided that You have not previously received a notice of noncompliance 
-   for the same Work from the Licensor. For the avoidance of doubt, this 
-   cure period does not apply to, modify, or reinstate any licenses 
-   terminated under Section 2 (Grant of Patent License).
+   the automatic termination of all rights and licenses granted to You under 
+   this License if You fail to cure Your noncompliance within thirty (30) days 
+   of becoming aware of the violation. Upon timely cure, Your rights shall be 
+   fully reinstated retroactively and prospectively, provided that You have 
+   not previously received a notice of noncompliance for the same Work from 
+   the Licensor. For the avoidance of doubt, this cure period does not apply 
+   to, modify, or reinstate any licenses terminated under Section 2 (Grant 
+   of Patent License).
 
 
 4. Trademark & Endorsement.
@@ -135,7 +135,10 @@ PAX PUBLIC LICENSE VERSION 2.0
    reasonable and customary use in describing the origin of the Work. Neither 
    the name of the Licensor nor the names of its contributors may be used to 
    endorse or promote products derived from this Software without specific 
-   prior written permission.
+   prior written permission. Any unauthorized or deceptive use of the 
+   Licensor’s trademarks constitutes a material breach of this License and 
+   shall trigger immediate termination of all rights under Section 3, without 
+   the benefit of a cure period.
 
 
 5. Disclaimer of Warranty.
@@ -170,19 +173,21 @@ PAX PUBLIC LICENSE VERSION 2.0
    otherwise exclude Section 2 (Grant of Patent License) of this License in 
    its entirety, solely to the extent necessary to eliminate any conflict with 
    the conditions of the GPLv2 or LGPLv2.1, but only with respect to the 
-   Combined Software itself. The patent licenses granted under Section 2 shall 
-   remain fully effective and un-waived for all other standalone distributions 
-   or uses of the Work or its Contributions.
+   Combined Software itself. The waiver granted under this Section shall not 
+   apply to, revive, or reinstate any licenses previously terminated under 
+   the litigation provisions of Section 2. The patent licenses granted under 
+   Section 2 shall remain fully effective and un-waived for all other standalone 
+   distributions or uses of the Work or its Contributions.
 
 ---
 
 APPENDIX: How to apply the Pax Public License to your work.
 
-To apply the Pax Public License to your work, attach the following boilerplate notice, with the fields enclosed by brackets "[]" replaced with your own identifying information. (Don't include the brackets!) The text should be enclosed in the appropriate comment syntax for the file format. We also recommend that a file or class name and description of purpose be included on the same "printed page" as the copyright notice for easier identification within third-party archives.
+To apply the Pax Public License to your work, attach the following boilerplate notice, with the fields enclosed by brackets "[]" replaced with your own identifying information. (Don't include the brackets!) The text should be enclosed in the appropriate comment syntax for the file format.
 
 Copyright [yyyy] [name of copyright owner]
 
-Licensed under the Pax Public License, Version 2.0 (the "License");
+Licensed under the Pax Public License, Version 3.0 (the "License");
 you may not use this file except in compliance with the License.
 
 Unless required by applicable law or agreed to in writing, software
@@ -193,5 +198,4 @@ limitations under the License.
 
 You may obtain a copy of the full License text within the Source or Object 
 (or Binary) form materials provided with this distribution (typically in a 
-LICENSE file, or LICENSE-PAX if there is more than one file named "LICENSE"), 
-or at: https://gitlab.com/pax-project/pax-public-license/-/blob/main/LICENSE
+"LICENSE" file, or "LICENSE-PAX" if there is more than one file named "LICENSE").

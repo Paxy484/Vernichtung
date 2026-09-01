@@ -1,7 +1,7 @@
 /*
 Copyright 2026 Rafael Peixoto
 
-Licensed under the Pax Public License, Version 2.0 (the "License");
+Licensed under the Pax Public License, Version 3.0 (the "License");
 you may not use this file except in compliance with the License.
 
 Unless required by applicable law or agreed to in writing, software
@@ -12,8 +12,7 @@ limitations under the License.
 
 You may obtain a copy of the full License text within the Source or Object 
 (or Binary) form materials provided with this distribution (typically in a 
-LICENSE file, or LICENSE-PAX if there is more than one file named "LICENSE"), 
-or at: https://gitlab.com/pax-project/pax-public-license/-/blob/main/LICENSE
+"LICENSE" file, or "LICENSE-PAX" if there is more than one file named "LICENSE").
 */
 
 #include <stdio.h>
