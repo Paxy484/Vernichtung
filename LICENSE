@@ -1,9 +1,9 @@
-PAX PUBLIC LICENSE VERSION 3.0
+PAX PUBLIC LICENSE VERSION 3.444
 
 0. Definitions.
 
    "License" shall mean the terms and conditions for use, reproduction, and 
-   distribution as defined by Sections 0 through 7 of this document.
+   distribution as defined by Sections 0 through 9 of this document.
 
    "Licensor" shall mean the copyright owner or entity authorized by the 
    copyright owner that is granting the License.
@@ -12,9 +12,14 @@ PAX PUBLIC LICENSE VERSION 3.0
    entities that control, are controlled by, or are under common control with 
    that entity. For the purposes of this definition, "control" means (i) the 
    power, direct or indirect, to cause the direction or management of such 
-   entity, whether by contract or otherwise, or (ii) ownership of fifty percent 
-   (50%) or more of the outstanding shares, or (iii) beneficial ownership of 
-   such entity.
+   entity, whether by contract, voting control, or otherwise, or (ii) ownership 
+   of fifty percent (50%) or more of the outstanding shares, or (iii) beneficial 
+   ownership of such entity, or (iv) the power to elect or appoint a majority 
+   of the directors, managers, or governing body of such entity, or (v) any 
+   other arrangement whereby an entity directs the affairs of another through 
+   contractual rights or operational veto powers regardless of ownership percentage, 
+   or (vi) any strategic relationship, partnership, or economic arrangement 
+   resulting in de facto operational, structural, or financial control.
 
    "You" (or "Your") shall mean an individual or Legal Entity exercising 
    permissions granted by this License.
@@ -77,23 +82,25 @@ PAX PUBLIC LICENSE VERSION 3.0
    complies with the conditions set forth in Section 3.
 
 
-2. Grant of Patent License.
+2. Grant of Patent License & Broad Patent Peace.
 
    Subject to the terms and conditions of this License, each Contributor hereby 
    grants to You a perpetual, worldwide, non-exclusive, no-charge, royalty-free, 
-   irrevocable (except as stated in this section and Section 7) patent license 
-   to make, have made, use, offer to sell, sell, import, and otherwise transfer 
-   the Work, where such license applies only to those patent claims licensable 
-   by such Contributor that are necessarily infringed by their Contribution(s) 
-   alone or by combination of their Contribution(s) with the Work to which such 
+   irrevocable (except as stated in this section) patent license to make, have 
+   made, use, offer to sell, sell, import, and otherwise transfer the Work, 
+   where such license applies only to those patent claims licensable by such 
+   Contributor that are necessarily infringed by their Contribution(s) alone 
+   or by combination of their Contribution(s) with the Work to which such 
    Contribution(s) was submitted.
    
-   If You institute patent litigation against any entity (including a 
-   cross-claim or counterclaim in a lawsuit) alleging that the Work or a 
-   Contribution incorporated within the Work constitutes direct or 
-   contributory patent infringement, then any patent licenses granted to You 
-   under this License for that Work shall terminate as of the date such 
-   litigation is filed.
+   If You institute, maintain, or support patent litigation against any entity 
+   (including a cross-claim, counterclaim, or declaratory judgment action) 
+   alleging that the Work, a Contribution incorporated within the Work, or any 
+   related software, product, or technology owned or utilized by the Licensor 
+   or any Contributor constitutes direct or contributory patent infringement, 
+   then any and all copyright and patent licenses granted to You under this 
+   License for that Work shall terminate automatically and immediately as of the 
+   date such litigation is filed or initiated.
 
 
 3. Redistribution.
@@ -105,9 +112,8 @@ PAX PUBLIC LICENSE VERSION 3.0
 
    (a) You must retain, in the Source form of any Derivative Works that You 
        distribute, all copyright, patent, trademark, and attribution 
-       notices from the Source form of the Work (regardless of any waiver 
-       exercised under Section 7), and give any other recipients a copy 
-       of this License; and
+       notices from the Source form of the Work, and give any other recipients 
+       a copy of this License; and
 
    (b) If You distribute the Work or portions thereof in Object (or Binary) 
        form, You must reproduce the copyright notice, this License, and the 
@@ -120,12 +126,13 @@ PAX PUBLIC LICENSE VERSION 3.0
    Any failure to comply with the conditions of this Section shall result in 
    the automatic termination of all rights and licenses granted to You under 
    this License if You fail to cure Your noncompliance within thirty (30) days 
-   of becoming aware of the violation. Upon timely cure, Your rights shall be 
-   fully reinstated retroactively and prospectively, provided that You have 
-   not previously received a notice of noncompliance for the same Work from 
-   the Licensor. For the avoidance of doubt, this cure period does not apply 
-   to, modify, or reinstate any licenses terminated under Section 2 (Grant 
-   of Patent License).
+   of the date of the violation or within thirty (30) days of receiving written 
+   notice of noncompliance from the Licensor, whichever occurs first. Upon 
+   timely cure, Your rights shall be fully reinstated retroactively and 
+   prospectively, provided that You have not previously received a notice of 
+   noncompliance for the same Work from the Licensor. For the avoidance of 
+   doubt, this cure period does not apply to, modify, or reinstate any 
+   licenses terminated under Section 2 (Grant of Patent License & Broad Patent Peace).
 
 
 4. Trademark & Endorsement.
@@ -147,37 +154,80 @@ PAX PUBLIC LICENSE VERSION 3.0
    LAW. EXCEPT WHEN OTHERWISE STATED IN WRITING THE COPYRIGHT HOLDERS AND/OR 
    OTHER PARTIES PROVIDE THE WORK "AS IS" WITHOUT WARRANTY OF ANY KIND, 
    EITHER EXPRESSED OR IMPLIED, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED 
-   WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE 
-   ENTIRE RISK AS TO THE QUALITY AND PERFORMANCE OF THE WORK IS WITH YOU. 
-   SHOULD THE WORK PROVE DEFECTIVE, YOU ASSUME THE COST OF ALL NECESSARY 
-   SERVICING, REPAIR, OR CORRECTION.
+   WARRANTIES OF TITLE, NON-INFRINGEMENT, MERCHANTABILITY, AND FITNESS FOR A 
+   PARTICULAR PURPOSE. THE ENTIRE RISK AS TO THE QUALITY, SECURITY, AND 
+   PERFORMANCE OF THE WORK IS WITH YOU. SHOULD THE WORK PROVE DEFECTIVE, YOU 
+   ASSUME THE COST OF ALL NECESSARY SERVICING, REPAIR, OR CORRECTION.
 
 
 6. Limitation of Liability.
 
    IN NO EVENT UNLESS REQUIRED BY APPLICABLE LAW OR AGREED TO IN WRITING WILL 
-   ANY COPYRIGHT HOLDER, OR ANY OTHER PARTY WHO MODIFIES AND/OR CONVEYS THE 
-   WORK AS PERMITTED ABOVE, BE LIABLE TO YOU FOR DAMAGES, INCLUDING ANY 
-   GENERAL, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES ARISING OUT OF THE 
+   ANY COPYRIGHT HOLDER, CONTRIBUTOR, OR ANY OTHER PARTY WHO MODIFIES AND/OR 
+   CONVEYS THE WORK AS PERMITTED ABOVE, BE LIABLE TO YOU FOR DAMAGES, INCLUDING 
+   ANY GENERAL, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES ARISING OUT OF THE 
    USE OR INABILITY TO USE THE WORK (INCLUDING BUT NOT LIMITED TO LOSS OF 
-   DATA OR DATA BEING RENDERED INACCURATE OR LOSSES SUSTAINED BY YOU OR THIRD 
-   PARTIES OR A FAILURE OF THE WORK TO OPERATE WITH ANY OTHER PROGRAMS), 
-   EVEN IF SUCH HOLDER OR OTHER PARTY HAS BEEN ADVISED OF THE POSSIBILITY OF 
-   SUCH DAMAGES.
+   DATA, DATA BEING RENDERED INACCURATE, CLOUD COMPUTING OR INFRASTRUCTURE 
+   OVERAGES, NETWORK DOWNTIME, SECURITY BREACHES, OR LOSSES SUSTAINED BY 
+   YOU OR THIRD PARTIES, OR A FAILURE OF THE WORK TO OPERATE WITH ANY OTHER 
+   PROGRAMS), EVEN IF SUCH HOLDER, CONTRIBUTOR, OR OTHER PARTY HAS BEEN ADVISED 
+   OF THE POSSIBILITY OF SUCH DAMAGES. IF THIS LIMITATION OF LIABILITY IS FOUND 
+   TO BE UNENFORCEABLE OR INVALID FOR ANY REASON UNDER APPLICABLE LAW, THE TOTAL 
+   AGGREGATE LIABILITY OF ALL DISCLAIMED PARTIES SHALL BE STRICTLY LIMITED TO 
+   THE MINIMUM STATUTORY AMOUNT REQUIRED BY LAW, NOT TO EXCEED ONE EURO (€1.00) 
+   OR ONE US DOLLAR ($1.00), WHICHEVER IS LOWER.
 
+   ANY LEGAL ACTION, CLAIM, OR DISPUTE ARISING OUT OF OR RELATING TO THIS LICENSE 
+   SHALL BE GOVERNED BY THE LAWS OF THE JURISDICTION OF THE DEFENDING PARTY'S DOMICILE, 
+   WITHOUT REGARD TO CONFLICT OF LAW PRINCIPLES, AND EXCLUSIVELY RESOLVED IN THE 
+   COMPETENT COURTS OF SAID DEFENDING PARTY'S DOMICILE OR VIA MUTUALLY AGREED 
+   INTERNATIONAL ARBITRATION. IF YOU INITIATE LEGAL PROCEEDINGS AGAINST THE LICENSOR, 
+   ANY CONTRIBUTOR, OR ANY OTHER PARTY WHO CONVEYS THE WORK AS PERMITTED ABOVE, AND 
+   YOU FAIL TO PREVAIL, YOU EXPLICITLY AGREE TO FULLY REIMBURSE THE TARGETED LICENSOR, 
+   CONTRIBUTOR, OR DEFENDING PARTIES FOR ALL REASONABLE ATTORNEY'S FEES, COURT COSTS, 
+   AND TRAVEL EXPENSES INCURRED IN DEFENSE. THE PAYMENT OR TENDER OF THE MAXIMUM LIABILITY 
+   AMOUNT SPECIFIED HEREIN SHALL CONSTITUTE A FULL, FINAL, AND ABSOLUTE ACCORD AND 
+   SATISFACTION, COMPLETELY RELEASING AND PERMANENTLY DISCHARGING THE DEFENDING PARTY 
+   FROM ANY AND ALL PAST, PRESENT, OR FUTURE CLAIMS, ACTIONS, OR CAUSES OF ACTION ARISING 
+   FROM THIS WORK, THEREBY LEGALLY BARRING ANY SUBSEQUENT OR REPETITIVE LITIGATION BY 
+   YOU OR YOUR AFFILIATES.
 
 7. Combined Software
 
    In addition, if You create, distribute, or use Combined Software, You may 
-   automatically, retroactively, and prospectively choose to deem waived or 
-   otherwise exclude Section 2 (Grant of Patent License) of this License in 
-   its entirety, solely to the extent necessary to eliminate any conflict with 
-   the conditions of the GPLv2 or LGPLv2.1, but only with respect to the 
-   Combined Software itself. The waiver granted under this Section shall not 
-   apply to, revive, or reinstate any licenses previously terminated under 
-   the litigation provisions of Section 2. The patent licenses granted under 
-   Section 2 shall remain fully effective and un-waived for all other standalone 
-   distributions or uses of the Work or its Contributions.
+   automatically, retroactively, and prospectively choose to deem completely 
+   waived, suppressed, or otherwise excluded Section 2 (Grant of Patent License & 
+   Broad Patent Peace), Section 6 (Limitation of Liability), Section 8 (Patent 
+   and Industrial Covenant Assurance), and Section 9 (Severability) of this 
+   License in their entirety, solely to the extent necessary to eliminate any 
+   jurisdictional, fee-shifting, or additional restriction conflicts with the 
+   absolute conditions of the GPLv2 or LGPLv2.1, but only with respect to the 
+   Combined Software itself. 
+
+   The waiver granted under this Section shall not apply to, revive, or reinstate 
+   any licenses previously terminated under the litigation provisions of Section 2 
+   and 8. All terms, patent licenses, liability caps, and forum protections 
+   shall remain fully effective, absolute, and un-waived for all other standalone 
+   distributions, forks, or uses of the Work or its Contributions outside of the 
+   Combined Software.
+
+8. Patent and Industrial Covenant Assurance
+
+   Any individual or Legal Entity exercising permissions under this License 
+   explicitly covenants and agrees that they forfeit any right to assert, 
+   maintain, or support any industrial patent infringement claims against the 
+   Licensor or any Contributor regarding the standalone Hardware Design or its physical 
+   Contributions. If You initiate such patent litigation, Your rights to use, modify, 
+   distribute, or physically manufacture goods based on the Hardware Design under this 
+   License shall automatically and immediately terminate without notice.
+
+9. Severability.
+
+   If any provision of this License is held to be invalid, illegal, or 
+   unenforceable under applicable law, the validity, legality, and 
+   enforceability of the remaining provisions shall not in any way be 
+   affected or impaired thereby, and the invalid provision shall be 
+   reformed to the minimum extent necessary to make it valid and enforceable.
 
 ---
 
@@ -187,7 +237,7 @@ To apply the Pax Public License to your work, attach the following boilerplate n
 
 Copyright [yyyy] [name of copyright owner]
 
-Licensed under the Pax Public License, Version 3.0 (the "License");
+Licensed under the Pax Public License, Version 3.444 (the "License");
 you may not use this file except in compliance with the License.
 
 Unless required by applicable law or agreed to in writing, software
@@ -196,7 +246,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 
-SPDX-License-Identifier: LicenseRef-Pax-3.0
+SPDX-License-Identifier: LicenseRef-Pax-3.444
 
 You may obtain a copy of the full License text within the Source or Object 
 (or Binary) form materials provided with this distribution (typically in a 
