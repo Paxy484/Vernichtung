@@ -1,21 +1,21 @@
 /*
-Copyright 2026 Rafael Peixoto
-
-Licensed under the Pax Public License, Version 3.444 (the "License");
-you may not use this file except in compliance with the License.
-
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
-
-SPDX-License-Identifier: LicenseRef-Pax-3.444
-
-You may obtain a copy of the full License text within the Source or Object 
-(or Binary) form materials provided with this distribution (typically in a 
-"LICENSE" file, or "LICENSE-PAX" if there is more than one file named "LICENSE").
-*/
+ * Copyright 2026 Rafael Peixoto
+ *
+ * Licensed under the Pax Public License, Version 5.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" basis,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ * SPDX-License-Identifier: LicenseRef-Pax-5.0
+ *
+ * You may obtain a copy of the full License text within the Source or Object 
+ * (or Binary) form materials provided with this distribution (typically in a 
+ * "LICENSE" file, or "LICENSE-PAX" if there is more than one file named "LICENSE").
+ */
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -25,6 +25,8 @@ You may obtain a copy of the full License text within the Source or Object
 #include <math.h>
 #include <time.h>
 #include <SDL2/SDL.h>
+
+// I'm sorry
 
 /* =========================================================================
  * ENGINE CONSTANTS & PHYSICS TWEAKS

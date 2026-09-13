@@ -1,9 +1,9 @@
-PAX PUBLIC LICENSE VERSION 3.444
+PAX PUBLIC LICENSE VERSION 5.0
 
 0. Definitions.
 
    "License" shall mean the terms and conditions for use, reproduction, and 
-   distribution as defined by Sections 0 through 9 of this document.
+   distribution as defined by Sections 0 through 8 of this document.
 
    "Licensor" shall mean the copyright owner or entity authorized by the 
    copyright owner that is granting the License.
@@ -24,21 +24,29 @@ PAX PUBLIC LICENSE VERSION 3.444
    "You" (or "Your") shall mean an individual or Legal Entity exercising 
    permissions granted by this License.
 
-   "Work" (or "Software" or "Program") shall mean the work of authorship in 
-   any executable or non-executable form—including but not limited to software 
-   source code, object code, binary code, bytecode, scripts, data files, build-
-   automation tools, documentation, and configuration files—whether in Source 
-   or Object (or Binary) form, made available under the License, as indicated 
-   by a copyright notice that is included in or attached to the work.
+   "Hardware Design" shall mean any work of authorship, engineering, or 
+   specification representing physical architecture, structural layouts, or 
+   circuitry—including but not limited to schematics, Gerber files, PCB layouts, 
+   Computer-Aided Design (CAD) models, bills of materials, 3D printing files, 
+   and manufacturing drawings—made available under the License.
+
+   "Work" (or "Software" or "Program" or "Design") shall mean the work of 
+   authorship in any executable, non-executable, or physical form—including 
+   but not limited to software source code, object code, binary code, bytecode, 
+   scripts, data files, build-automation tools, documentation, configuration files, 
+   and Hardware Designs—whether in Source, Object (or Binary), or physical 
+   manufacturing form, made available under the License, as indicated by a 
+   copyright notice that is included in or attached to the work.
 
    "Source" form shall mean the preferred form for making modifications, 
    including but not limited to software source code, documentation source, 
-   and configuration files.
+   Hardware Design files, and configuration files.
 
    "Object" (or "Binary") form shall mean any form resulting from mechanical 
-   transformation or translation of a Source form, including but not limited 
-   to compiled object code, executable binaries, bytecode, generated 
-   documentation, and conversions to other media types.
+   transformation, translation, or physical realization of a Source form, 
+   including but not limited to compiled object code, executable binaries, 
+   bytecode, generated documentation, physical circuit boards, manufactured 
+   enclosures, and conversions to other media types.
 
    "Derivative Works" shall mean any work, whether in Source or Object (or 
    Binary) form, that is based on (or derived from) the Work and for which the 
@@ -66,19 +74,14 @@ PAX PUBLIC LICENSE VERSION 3.444
    behalf of whom a Contribution has been received by Licensor and 
    subsequently incorporated within the Work.
 
-   "Combined Software" shall mean any work formed by combining or linking 
-   compiled or source forms of this Work with software that is licensed 
-   under the GNU General Public License Version 2 (GPLv2) or the GNU Lesser 
-   General Public License Version 2.1 (LGPLv2.1).
 
-
-1. Grant of Software License.
+1. Grant of Software and Design License.
 
    Subject to the terms and conditions of this License, permission is hereby 
    granted, free of charge, to any person obtaining a copy of the Work, 
-   to use, copy, modify, merge, publish, distribute, and/or sell copies of 
-   the Work, and to permit persons to whom the Work is furnished to do so, 
-   provided that any downstream distribution of the Work or portions thereof 
+   to use, copy, modify, merge, publish, distribute, manufacture, and/or sell 
+   copies of the Work, and to permit persons to whom the Work is furnished to do 
+   so, provided that any downstream distribution of the Work or portions thereof 
    complies with the conditions set forth in Section 3.
 
 
@@ -96,11 +99,16 @@ PAX PUBLIC LICENSE VERSION 3.444
    If You institute, maintain, or support patent litigation against any entity 
    (including a cross-claim, counterclaim, or declaratory judgment action) 
    alleging that the Work, a Contribution incorporated within the Work, or any 
-   related software, product, or technology owned or utilized by the Licensor 
-   or any Contributor constitutes direct or contributory patent infringement, 
-   then any and all copyright and patent licenses granted to You under this 
-   License for that Work shall terminate automatically and immediately as of the 
-   date such litigation is filed or initiated.
+   related software, product, design, or technology owned or utilized by the 
+   Licensor or any Contributor constitutes direct or contributory patent 
+   infringement, then any and all copyright and patent licenses granted to You 
+   under this License for that Work shall terminate automatically and immediately 
+   as of the date such litigation is filed or initiated. Upon such automatic 
+   termination, Your permissions to use, copy, modify, merge, publish, 
+   distribute, manufacture, and/or sell the Work shall immediately cease, but 
+   the conditions and protective provisions set forth within Sections 2, 5, 6, 
+   and 7 shall explicitly survive termination as a binding and permanent 
+   penalty for breach.
 
 
 3. Redistribution.
@@ -141,8 +149,8 @@ PAX PUBLIC LICENSE VERSION 3.444
    service marks, or product names of the Licensor, except as required for 
    reasonable and customary use in describing the origin of the Work. Neither 
    the name of the Licensor nor the names of its contributors may be used to 
-   endorse or promote products derived from this Software without specific 
-   prior written permission. Any unauthorized or deceptive use of the 
+   endorse or promote products derived from this Software or Design without 
+   specific prior written permission. Any unauthorized or deceptive use of the 
    Licensor’s trademarks constitutes a material breach of this License and 
    shall trigger immediate termination of all rights under Section 3, without 
    the benefit of a cure period.
@@ -171,11 +179,18 @@ PAX PUBLIC LICENSE VERSION 3.444
    OVERAGES, NETWORK DOWNTIME, SECURITY BREACHES, OR LOSSES SUSTAINED BY 
    YOU OR THIRD PARTIES, OR A FAILURE OF THE WORK TO OPERATE WITH ANY OTHER 
    PROGRAMS), EVEN IF SUCH HOLDER, CONTRIBUTOR, OR OTHER PARTY HAS BEEN ADVISED 
-   OF THE POSSIBILITY OF SUCH DAMAGES. IF THIS LIMITATION OF LIABILITY IS FOUND 
-   TO BE UNENFORCEABLE OR INVALID FOR ANY REASON UNDER APPLICABLE LAW, THE TOTAL 
-   AGGREGATE LIABILITY OF ALL DISCLAIMED PARTIES SHALL BE STRICTLY LIMITED TO 
-   THE MINIMUM STATUTORY AMOUNT REQUIRED BY LAW, NOT TO EXCEED ONE EURO (€1.00) 
-   OR ONE US DOLLAR ($1.00), WHICHEVER IS LOWER.
+   OF THE POSSIBILITY OF SUCH DAMAGES. 
+   
+   BECAUSE THIS WORK IS LICENSED PUBLICLY, REUSE-READY, AND AS A MATTER OF 
+   COMMUNITY GOODWILL, YOU EXPLICITLY AGREE THAT THIS MINIMAL NOMINAL LIABILITY 
+   CAP IS REASONABLE, FAIR, AND CONSTITUTES THE MAXIMUM RISK THE LICENSOR IS 
+   WILLING TO ASSUME REGARDLESS OF ANY FEES PAID BY YOU TO THIRD PARTIES 
+   FOR COPIES, BINARIES, OR DERIVATIVES THEREOF. IF THIS LIMITATION OF LIABILITY 
+   IS FOUND TO BE UNENFORCEABLE OR INVALID FOR ANY REASON UNDER APPLICABLE LAW, 
+   THE TOTAL AGGREGATE LIABILITY OF ALL DISCLAIMED PARTIES SHALL BE STRICTLY 
+   LIMITED TO THE MINIMUM STATUTORY AMOUNT REQUIRED BY LAW, NOT TO EXCEED ONE 
+   EURO (€1.00) OR ONE US DOLLAR ($1.00), OR THE EQUIVALENT VALUE IN THE LOCAL 
+   CURRENCY OF THE JURISDICTION, WHICHEVER IS LOWEST.
 
    ANY LEGAL ACTION, CLAIM, OR DISPUTE ARISING OUT OF OR RELATING TO THIS LICENSE 
    SHALL BE GOVERNED BY THE LAWS OF THE JURISDICTION OF THE DEFENDING PARTY'S DOMICILE, 
@@ -189,64 +204,58 @@ PAX PUBLIC LICENSE VERSION 3.444
    AMOUNT SPECIFIED HEREIN SHALL CONSTITUTE A FULL, FINAL, AND ABSOLUTE ACCORD AND 
    SATISFACTION, COMPLETELY RELEASING AND PERMANENTLY DISCHARGING THE DEFENDING PARTY 
    FROM ANY AND ALL PAST, PRESENT, OR FUTURE CLAIMS, ACTIONS, OR CAUSES OF ACTION ARISING 
-   FROM THIS WORK, THEREBY LEGALLY BARRING ANY SUBSEQUENT OR REPETITIVE LITIGATION BY 
+   FROM THIS WORK, THEREBY LEGALLY BARRING ANY SUBSEQUENT OR REPETIVE LITIGATION BY 
    YOU OR YOUR AFFILIATES.
 
-7. Combined Software
 
-   In addition, if You create, distribute, or use Combined Software, You may 
-   automatically, retroactively, and prospectively choose to deem completely 
-   waived, suppressed, or otherwise excluded Section 2 (Grant of Patent License & 
-   Broad Patent Peace), Section 6 (Limitation of Liability), Section 8 (Patent 
-   and Industrial Covenant Assurance), and Section 9 (Severability) of this 
-   License in their entirety, solely to the extent necessary to eliminate any 
-   jurisdictional, fee-shifting, or additional restriction conflicts with the 
-   absolute conditions of the GPLv2 or LGPLv2.1, but only with respect to the 
-   Combined Software itself. 
-
-   The waiver granted under this Section shall not apply to, revive, or reinstate 
-   any licenses previously terminated under the litigation provisions of Section 2 
-   and 8. All terms, patent licenses, liability caps, and forum protections 
-   shall remain fully effective, absolute, and un-waived for all other standalone 
-   distributions, forks, or uses of the Work or its Contributions outside of the 
-   Combined Software.
-
-8. Patent and Industrial Covenant Assurance
+7. Patent and Industrial Covenant Assurance.
 
    Any individual or Legal Entity exercising permissions under this License 
    explicitly covenants and agrees that they forfeit any right to assert, 
    maintain, or support any industrial patent infringement claims against the 
-   Licensor or any Contributor regarding the standalone Hardware Design or its physical 
-   Contributions. If You initiate such patent litigation, Your rights to use, modify, 
-   distribute, or physically manufacture goods based on the Hardware Design under this 
-   License shall automatically and immediately terminate without notice.
+   Licensor or any Contributor regarding the standalone Hardware Design or its 
+   physical Contributions. If You initiate such patent litigation, Your rights 
+   to use, modify, distribute, or physically manufacture goods based on the 
+   Hardware Design under this License shall automatically and immediately 
+   terminate without notice.
 
-9. Severability.
+
+8. Severability & Survival.
 
    If any provision of this License is held to be invalid, illegal, or 
    unenforceable under applicable law, the validity, legality, and 
-   enforceability of the remaining provisions shall not in any way be 
-   affected or impaired thereby, and the invalid provision shall be 
-   reformed to the minimum extent necessary to make it valid and enforceable.
+   enforceability of the remaining provisions shall not in any way be affected 
+   or impaired thereby. The invalid or unenforceable provision shall be 
+   severed and struck from this License entirely, and replaced automatically 
+   by the existing valid fallback provisions set forth herein (including the 
+   statutory minimum fallbacks in Section 6), without any judicial modification, 
+   alteration, or reformation of the remaining text.
+   
+   Sections 2, 5, 6, and 7 of this License shall explicitly survive any 
+   expiration, violation, or termination of this agreement and remain fully 
+   enforceable against You in perpetuity.
 
 ---
 
 APPENDIX: How to apply the Pax Public License to your work.
 
-To apply the Pax Public License to your work, attach the following boilerplate notice, with the fields enclosed by brackets "[]" replaced with your own identifying information. (Don't include the brackets!) The text should be enclosed in the appropriate comment syntax for the file format.
+To apply the Pax Public License to your work, attach the following boilerplate
+notice, with the fields enclosed by brackets "[]" replaced with your own 
+identifying information. (Don't include the brackets!) The text should be 
+enclosed in the appropriate comment syntax for the file format.
 
 Copyright [yyyy] [name of copyright owner]
 
-Licensed under the Pax Public License, Version 3.444 (the "License");
+Licensed under the Pax Public License, Version 5.0 (the "License");
 you may not use this file except in compliance with the License.
 
 Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
+distributed under the License is distributed on an "AS IS" basis,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 
-SPDX-License-Identifier: LicenseRef-Pax-3.444
+SPDX-License-Identifier: LicenseRef-Pax-5.0
 
 You may obtain a copy of the full License text within the Source or Object 
 (or Binary) form materials provided with this distribution (typically in a 
