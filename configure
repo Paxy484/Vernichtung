@@ -6,11 +6,11 @@ if command -v cc >/dev/null 2>&1; then
     echo "yes"
 else
     echo "no"
-    echo "[ERROR] 'cc' not found." >&2
+    echo "[ERROR] System compiler 'cc' not found." >&2
     exit 1
 fi
 
-# 2. Comprehensive validation loop over every single required layout header
+# 1. Comprehensive validation loop over every single required layout header
 for header in stdio.h stdlib.h stdint.h string.h strings.h math.h time.h SDL2/SDL.h; do
     printf "checking for %s... " "$header"
     
@@ -19,17 +19,17 @@ for header in stdio.h stdlib.h stdint.h string.h strings.h math.h time.h SDL2/SD
         echo "yes"
     else
         echo "no"
-        echo "[ERROR] dependency <$header> is missing, How?" >&2
+        echo "[ERROR] Required header dependency <$header> is missing." >&2
         
-        # Give a helpful installation hint if SDL2 is the specific failure point
         if [ "$header" = "SDL2/SDL.h" ]; then
-            echo "[HINT] If you are using Debian(-based) you might installed 'sdl2' instead 'libsdl2-dev' in APT." >&2
+            echo "[HINT] On Debian/Ubuntu/Mint, run: apt install libsdl2-dev" >&2
+            echo "[HINT] On FreeBSD, run: pkg install sdl2" >&2
         fi
         exit 1
     fi
 done
 
-# 3. Double-check for the automated build-flags query utility
+# 2. Check for the automated build-flags query utility
 printf "checking for sdl2-config... "
 if command -v sdl2-config >/dev/null 2>&1; then
     echo "yes"
@@ -52,9 +52,9 @@ else
     esac
 fi
 
-# 4. Set final cross-platform flags and target layouts
+# 3. Set final cross-platform flags and target layouts
 EXE=""
-CFLAGS="-Wall -Wextra -std=c99 $SDL_CFLAGS"
+CFLAGS="-Wall -Wextra -Iinclude $SDL_CFLAGS"
 LIBS="$SDL_LIBS -lm"
 
 # Append native standalone executable extensions inside Windows environments
@@ -65,6 +65,29 @@ case "$(uname -s 2>/dev/null)" in
         ;;
 esac
 
+# 4. Pure POSIX Source & Object Expansion Logic
+SRCS=""
+OBJS=""
+
+for f in src/*.c; do
+    if [ -f "$f" ]; then
+        if [ -z "$SRCS" ]; then
+            SRCS="$f"
+        else
+            SRCS="$SRCS $f"
+        fi
+        bare_obj=$(echo "$f" | sed 's|^src/||' | sed 's|\.c$|\.o|')
+        if [ -z "$OBJS" ]; then
+            OBJS="$bare_obj"
+        else
+            OBJS="$OBJS $bare_obj"
+        fi
+    fi
+done
+
+# Instantiate a true POSIX Tab variable to guarantee rule separators
+T=$(printf '\t')
+
 # 5. Output the completed local build rules Makefile
 printf "configure: creating Makefile... "
 cat << EOF > Makefile
@@ -73,15 +96,34 @@ CFLAGS = $CFLAGS
 LIBS = $LIBS
 TARGET = vernichtung$EXE
 
-SRC = main.c
+SRCS = $SRCS
+OBJS = $OBJS
 
 all: \$(TARGET)
 
-\$(TARGET): \$(SRC)
-	\$(CC) \$(CFLAGS) \$(SRC) -o \$(TARGET) \$(LIBS)
+\$(TARGET): \$(OBJS)
+${T}\$(CC) \$(CFLAGS) \$(OBJS) -o \$(TARGET) \$(LIBS)
+
+main.o: src/main.c
+${T}\$(CC) \$(CFLAGS) -c src/main.c -o main.o
+
+u_archive.o: src/u_archive.c
+${T}\$(CC) \$(CFLAGS) -c src/u_archive.c -o u_archive.o
+
+i_video.o: src/i_video.c
+${T}\$(CC) \$(CFLAGS) -c src/i_video.c -o i_video.o
+
+i_input.o: src/i_input.c
+${T}\$(CC) \$(CFLAGS) -c src/i_input.c -o i_input.o
+
+p_physics.o: src/p_physics.c
+${T}\$(CC) \$(CFLAGS) -c src/p_physics.c -o p_physics.o
+
+r_main.o: src/r_main.c
+${T}\$(CC) \$(CFLAGS) -c src/r_main.c -o r_main.o
 
 clean:
-	rm -f \$(TARGET) Makefile
+${T}rm -f \$(OBJS) \$(TARGET) Makefile
 
 .PHONY: all clean
 EOF
