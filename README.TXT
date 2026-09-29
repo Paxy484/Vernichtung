@@ -7,13 +7,13 @@ Here it is: Vernichtung at your hands!
 
 WHAT IS IT?
 -----------
-Vernichtung is a solo, clean-room reverse-engineered 2.5D software game 
+Vernichtung is a clean-room reverse-engineered 2.5D software game 
 engine built completely from scratch in portable C and SDL2. 
 
 Vernichtung exists to a completely 
-independent, un-bloated reconstruction of the id Tech 1 architecture 
+independent, reconstruction of the id Tech 1 architecture 
 released under a fully permissive, non-viral license. (No, i dont hate Copyleft)
-And to fulfill John Carmack's wish
+And to fulfill John Carmack's and other devs wishes
 
 "The recent discussions around copilot are a good opportunity to say 
 this: I wish I could have licensed the Id source code releases as BSD. 
@@ -53,15 +53,11 @@ i still have not found the cause of it
 
 Future milestones include a PWAD ("-file") Surppot and clean-room specification-based MUS-to-MIDI real-time 
 translation layer to feed dynamic-link audio device callbacks targeting 
-Nuked-OPL3 or FluidSynth (since they are both licensed under LGPL-2.1)
+Nuked-OPL3 or FluidSynth (since they are both licensed under LGPL-2.1) and so much more!
 
-CALL FOR COLLABORATION
+CONTRIBUTING TO VERNICHTUNG
 ----------------------
-Because the engine has been completely refactored into clean, isolated modules, 
-it is exceptionally easy to read, study, and navigate. 
-
-Systems developers, graphics hobbyists, and low-level C programmers are openly 
-invited to fork the repository, submit issues, or contribute patches to help Vernichtung.
+See the CONTRIBUTING file!
 
 And that is all.
 
@@ -72,4 +68,4 @@ Ok, sorry, but stay safe out there.
 
 Have fun.
 
-- Rafael, 9/28/2026
+- Rafael, 9/29/2026

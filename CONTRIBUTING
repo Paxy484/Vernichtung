@@ -1,0 +1,73 @@
+===============================================================================
+                       VERNICHTUNG CONTRIBUTING GUIDE
+===============================================================================
+
+Hey everyone,
+Thanks for checking out Vernichtung!
+
+If you want to help push this project forward, here is what you need to know.
+
+WHAT IS THE GOAL?
+-----------------
+Vernichtung exists to be a completely independent, reconstruction
+of the id Tech 1 architecture under a permissive, non-viral license.
+
+LICENSING & COPYLEFT
+--------------------
+This project is officially released under the 3-Clause BSD License. 
+
+By contributing code, bug fixes, or patches here, you agree that your work 
+will be under the same BSD license. We do not accept viral copyleft code because 
+we want to keep this project completely permissive (and fulfill John Carmack's 
+and other devs wishes).
+
+THE CODE STRUCTURE
+------------------
+The engine is split into isolated modules so it is easy to navigate:
+* u_archive.c : Hardened WAD loading, parsing, and data flattening.
+* i_video.c   : Framebuffers, SDL2 textures, and that cool screen melt.
+* i_input.c   : Keyboard inputs and mouse sensitivity handling.
+* p_physics.c : Player movement, sliding wall collisions, and stairs.
+* r_main.c    : 2.5D software rendering loop and BSP node traversal.
+* main.c      : Core loop, timing gates, and window resizing events.
+
+If you add anything, make sure it stays modular and includes defensive array 
+boundary checks. And make sure it has comments to explain!
+
+AI ASSISTANT & LLM CODE POLICY
+------------------------------
+I used AI code as a tool to help make Vernichtung. AI coding is fine, but if you 
+use an AI assistant to help you write patches for this engine, you MUST follow 
+my strict rules:
+
+1. Test the code on your device first. Do not blind-paste things.
+2. AI bots are completely banned from signing their own names to commits.
+3. A real human (you!) must review the code manually before sending it over.
+4. LLMs are tools, not the developer. You are the developer.
+
+If you don't like AI at all, feel free to fork Vernichtung or block me.
+
+WHAT NEEDS FIXING RIGHT NOW?
+----------------------------
+* The Vertical Texture Bug: Walls stretch and distort vertically when you get 
+  too close or look around, so it is a perfect first issue if you want to tackle 
+  the r_main.c column math!
+* PWAD support: We need "-file" support to load custom patch WADs.
+* MUS-to-MIDI translator: A clean-room layer to feed audio into Nuked-OPL3 or 
+  FluidSynth for music.
+
+HOW TO SUBMIT WORK
+------------------
+1. Fork the repo and make your changes on a clean branch.
+2. Make sure it compiles without warnings on GCC or Clang.
+3. Keep your commits clean and explain what your code updates.
+4. Open a Pull Request.
+
+I don't know how many people are going to contribute, but even small fixes 
+help a ton. 
+
+Ok, stay safe out there.
+
+Have fun.
+
+- Rafael
