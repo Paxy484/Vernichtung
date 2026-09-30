@@ -15,12 +15,6 @@ I would like thank these people for their hard work:
   Architects: Sam Lantinga (Loki Software / Valve Corporation) 
               and contributors.
   Licensed under the zlib License.
-  This software is provided 'as-is', without any express or implied warranty.
-  Origin must not be misrepresented; altered source versions must be plainly
-  marked as such, and this notice may not be removed or altered from any 
-  source distribution. Provides the universal multimedia abstraction layer 
-  to pipe software-rendered CPU framebuffer arrays straight to native OS 
-  graphics contexts.
 
 * Clang / LLD / LLVM Assembler
   Architects: LLVM Community and contributors.

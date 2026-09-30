@@ -108,6 +108,74 @@ int load_flats(FILE *file, filelump_t *lumps, int num_lumps);
 int load_wall_textures(FILE *file, filelump_t *lumps, int num_lumps);
 void free_archive_cache(void);
 
+/* Internal Fingerprint Scanner Prototype */
+const char* determine_iwad_fingerprint(filelump_t *directory, int num_lumps);
+
+/* =========================================================================
+ * CASE-SENSITIVE UPPERCASE LUMP FINGERPRINT SCANNER
+ * ========================================================================= */
+const char* determine_iwad_fingerprint(filelump_t *directory, int num_lumps) {
+    int has_e2m1 = 0;
+    int has_e4m1 = 0;
+    int has_super_shotgun_sound = 0; /* Checked via DSDSHTGN lump */
+    
+    /* Strict Open Source Freedoom Specific Graphical Indicators */
+    int is_freedoom_engine_raw = 0;   /* Checked via FREEDOOM lump signature */
+    int has_freedoom_phase1_menu = 0; /* Checked via M_PHAS1 lump */
+    int has_freedoom_phase2_menu = 0; /* Checked via M_PHAS2 lump */
+    int has_tnt_exclusive_map = 0;    /* Checked via MAP33 lump */
+
+    /* Scan the entire pre-loaded WAD directory for fingerprint lumps */
+    for (int i = 0; i < num_lumps; i++) {
+        char name[9] = {0}; /* 9 elements ensures a guaranteed null terminator at index 8 */
+        memcpy(name, directory[i].name, 8);
+
+        /* Case-Sensitive comparisons since inside WAD directories everything is strictly UPPERCASE */
+        if (strcmp(name, "E2M1") == 0)              has_e2m1 = 1;
+        else if (strcmp(name, "E4M1") == 0)         has_e4m1 = 1;
+        else if (strcmp(name, "DSDSHTGN") == 0)     has_super_shotgun_sound = 1;
+        else if (strcmp(name, "MAP33") == 0)        has_tnt_exclusive_map = 1;
+        else if (strcmp(name, "FREEDOOM") == 0)     is_freedoom_engine_raw = 1;
+        else if (strcmp(name, "M_PHAS1") == 0)      has_freedoom_phase1_menu = 1;
+        else if (strcmp(name, "M_PHAS2") == 0)      has_freedoom_phase2_menu = 1;
+    }
+
+    /* Unified Directory Identification Routing Engine */
+    if (is_freedoom_engine_raw || has_freedoom_phase1_menu || has_freedoom_phase2_menu) {
+        if (has_super_shotgun_sound || has_freedoom_phase2_menu) {
+            return "Freedoom: Phase 2";
+        }
+        return "Freedoom: Phase 1";
+    }
+
+    if (has_super_shotgun_sound) {
+        if (has_tnt_exclusive_map) return "Final DOOM: TNT - Evilution";
+        
+        /* Check if this WAD contains Final Doom's exclusive menu palette lump */
+        int is_final_doom = 0;
+        for (int i = 0; i < num_lumps; i++) {
+            char name[9] = {0};
+            memcpy(name, directory[i].name, 8);
+            if (strcmp(name, "DMENUPAL") == 0) {
+                is_final_doom = 1;
+                break;
+            }
+        }
+
+        /* If it has the Final Doom menu palette indicator, it's Plutonia! Otherwise, it's vanilla Doom 2! */
+        if (is_final_doom) {
+            return "Final DOOM: The Plutonia Experiment";
+        }
+        
+        return "DOOM 2: Hell on Earth";
+    }
+
+    if (has_e4m1) return "The Ultimate DOOM";
+    if (has_e2m1) return "DOOM (Registered)";
+
+    return "DOOM: Shareware";
+}
+
 /* =========================================================================
  * ENGINE LIFECYCLE EXECUTION
  * ========================================================================= */
@@ -138,8 +206,6 @@ int main(int argc, char *argv[]) {
         return 1;
     }
 
-    printf("[VERNICHTUNG] Opening asset file stream: %s\n", wad_filename);
-
     /* 2. Read WAD master layout headers and load file directories */
     wadheader_t header;
     if (fread(&header, sizeof(wadheader_t), 1, file) != 1) {
@@ -154,6 +220,23 @@ int main(int argc, char *argv[]) {
         free(directory); 
         return 1;
     }
+
+    /* Execute Case-Sensitive Lump Fingerprint check right here! */
+    const char *detected_game = determine_iwad_fingerprint(directory, header.numlumps);
+
+    /* =========================================================================
+     * PRINT VINTAGE STANDALONE CONSOLE SPLASH BANNER
+     * ========================================================================= */
+    printf("===========================================================================\n");
+    printf("                         %s\n", detected_game);
+    printf("===========================================================================\n");
+    printf(" Vernichtung is free software, covered by the 3-Clause BSD License.\n");
+    printf(" There is NO warranty; not even for MERCHANTABILITY or FITNESS FOR A\n");
+    printf(" PARTICULAR PURPOSE. You are welcome to change and distribute copies\n");
+    printf(" under certain conditions. See the source for more information.\n");
+    printf("===========================================================================\n");
+
+    printf("[VERNICHTUNG] Opening asset file stream: %s\n", wad_filename);
 
     /* 3. Invoke archive managers to parse colors and load graphics metadata */
     load_playpal(file, directory, header.numlumps);
@@ -242,6 +325,12 @@ int main(int argc, char *argv[]) {
                                        640, 400, SDL_WINDOW_FULLSCREEN_DESKTOP);
     SDL_Renderer *ren = SDL_CreateRenderer(win, -1, SDL_RENDERER_ACCELERATED);
 
+    /* =========================================================================
+     * This is 320x200 to match id tech 1
+     * ========================================================================= */
+    /* Tell SDL to lock our interactive game window space to a sharp 320x200 grid */
+    SDL_RenderSetLogicalSize(ren, 320, 200); 
+
     /* Extract title splash using our video wrapper module functions */
     SDL_Texture *title_texture = load_titlepic(ren, file, directory, header.numlumps);
 
@@ -252,13 +341,12 @@ int main(int argc, char *argv[]) {
     int mouse_captured = 1;
     SDL_SetRelativeMouseMode(SDL_TRUE);
 
-    int cur_w, cur_h;
-    SDL_GetWindowSize(win, &cur_w, &cur_h);
-    init_framebuffer(ren, cur_w, cur_h);
+    /* Explicitly initialize your frame buffers directly at 320x200 layout bounds */
+    init_framebuffer(ren, 320, 200);
 
-    /* Allocate system column occlusion depth metrics array buffers */
-    g_upper_clip = malloc(sizeof(int) * cur_w);
-    g_lower_clip = malloc(sizeof(int) * cur_w);
+    /* Allocate system column occlusion metrics matching our 320 logic columns */
+    g_upper_clip = malloc(sizeof(int) * 320);
+    g_lower_clip = malloc(sizeof(int) * 320);
 
     int running = 1;
     SDL_Event event;
@@ -295,18 +383,6 @@ int main(int argc, char *argv[]) {
                 }
             }
 
-            // Dynamically resize canvas arrays without dropping context limits (FIXED NESTING)
-            if (event.type == SDL_WINDOWEVENT && event.window.event == SDL_WINDOWEVENT_RESIZED) {
-                cur_w = event.window.data1;
-                cur_h = event.window.data2;
-                init_framebuffer(ren, cur_w, cur_h);
-
-                int *tmp_u = (int *)realloc(g_upper_clip, sizeof(int) * cur_w);
-                int *tmp_l = (int *)realloc(g_lower_clip, sizeof(int) * cur_w);
-                if (tmp_u) g_upper_clip = tmp_u;
-                if (tmp_l) g_lower_clip = tmp_l;
-            }
-
             // Send horizontal mouse displacement ticks straight into the look calculator module (FIXED NESTING)
             if (event.type == SDL_MOUSEMOTION && mouse_captured && g_state == STATE_IN_GAME) {
                 process_mouse_input(event.motion.xrel);
@@ -330,28 +406,28 @@ int main(int argc, char *argv[]) {
         } else if (g_state == STATE_MELTING || g_state == STATE_IN_GAME) {
             clear_pixel_buffer(0xFF000000); // Wipe software array canvas rows black
             
-            // Reset vertical tracking clipping markers before running sweeping sweeps
-            for (int i = 0; i < cur_w; i++) {
+            /* Reset vertical tracking clipping markers across our 320 columns */
+            for (int i = 0; i < 320; i++) {
                 g_upper_clip[i] = 0;
-                g_lower_clip[i] = cur_h;
+                g_lower_clip[i] = 200;
             }
 
-            // Calculate focal distance thresholds relative to current widescreen aspect ratios
-            float aspect_ratio = (float)cur_w / (float)cur_h;
+            /* Calculate fixed focal distance thresholds for 320x200 Mode 13h dimensions */
+            float aspect_ratio = 320.0f / 200.0f;
             float fov = FOV_BASE * (aspect_ratio / (4.0f / 3.0f));
-            float focal_length = (cur_w / 2.0f) / tanf(fov * (3.14159f / 180.0f) / 2.0f);
+            float focal_length = (320.0f / 2.0f) / tanf(fov * (3.14159f / 180.0f) / 2.0f);
 
-            // Traverse the map BSP architecture arrays front-to-back to populate raw canvas blocks
+            /* Traverse the map BSP architecture arrays front-to-back to populate raw canvas blocks */
             float rad = g_player_angle * (3.14159f / 180.0f);
-            render_bsp_node(ren, (uint16_t)g_root_node, rad, focal_length, cur_w, cur_h);
+            render_bsp_node(ren, (uint16_t)g_root_node, rad, focal_length, 320, 200);
 
-            // Flush raw software integers directly into our streamable hardware target wrapper
-            SDL_UpdateTexture(g_framebuffer_texture, NULL, g_pixel_buffer, cur_w * sizeof(uint32_t));
+            /* Flush software pixels (320 columns pitch) into our streamable hardware target wrapper */
+            SDL_UpdateTexture(g_framebuffer_texture, NULL, g_pixel_buffer, 320 * sizeof(uint32_t));
             SDL_RenderCopy(ren, g_framebuffer_texture, NULL, NULL);
 
-            // Draw the screen decay drop transition if melting state flags report active status
+            /* Draw the screen decay drop transition if melting state flags report active status */
             if (g_state == STATE_MELTING) {
-                render_screen_melt(ren, cur_w, cur_h);
+                render_screen_melt(ren, 320, 200);
             }
         }
 
@@ -365,7 +441,7 @@ int main(int argc, char *argv[]) {
         }
     }
 
-    // Tear down memory targets and exit libraries cleanly upon terminal signals (FIXED NESTING)
+    // Tear down memory targets and exit libraries cleanly upon terminal signals
     destroy_video_subsystem();
     free_archive_cache();
     free(g_upper_clip);

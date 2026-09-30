@@ -22,8 +22,7 @@ for header in stdio.h stdlib.h stdint.h string.h strings.h math.h time.h SDL2/SD
         echo "[ERROR] Required header dependency <$header> is missing." >&2
         
         if [ "$header" = "SDL2/SDL.h" ]; then
-            echo "[HINT] On Debian/Ubuntu/Mint, run: apt install libsdl2-dev" >&2
-            echo "[HINT] On FreeBSD, run: pkg install sdl2" >&2
+            echo "[HINT] On Debian-Based system, libsdl2-dev" >&2
         fi
         exit 1
     fi

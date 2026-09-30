@@ -66,28 +66,26 @@ SDL_Color g_palette[256];
 /*
  * init_framebuffer
  * ----------------
- * Allocates and stretches our internal software drawing array whenever the game engine starts 
- * or the user changes their operating system window size.
- *
- * Parameters:
- *   ren - Pointer to our active, hardware-accelerated SDL Renderer context.
- *   w   - The new target width in pixels.
- *   h   - The new target height in pixels.
+ * Allocates a 320x200 software rendering array context.
+ * This locks the engine logic tightly to retro Mode 13h boundaries.
  */
 void init_framebuffer(SDL_Renderer *ren, int w, int h) {
-    /* If memory was previously allocated for another size, wipe it cleanly first */
+    (void)w; (void)h; /* Silence unused parameters as we ignore window sizing completely */
+
+    /* If memory was previously allocated, wipe it cleanly first */
     if (g_pixel_buffer) free(g_pixel_buffer);
     if (g_framebuffer_texture) SDL_DestroyTexture(g_framebuffer_texture);
 
-    g_buffer_w = w;
-    g_buffer_h = h;
+    /* Lock our software buffer boundaries directly to classic 320x200 specifications */
+    g_buffer_w = 320;
+    g_buffer_h = 200;
 
-    /* Allocate enough sequential memory blocks to store a full screen of 32-bit integers */
-    g_pixel_buffer = (uint32_t*)malloc(sizeof(uint32_t) * w * h);
+    /* Allocate exactly 64,000 pixels sequential memory blocks (320 * 200) */
+    g_pixel_buffer = (uint32_t*)malloc(sizeof(uint32_t) * 320 * 200);
     
-    /* Create a streaming hardware texture wrapper that accepts our raw pixel injections */
+    /* Create a fixed streaming hardware texture wrapper at 320x200 */
     g_framebuffer_texture = SDL_CreateTexture(ren, SDL_PIXELFORMAT_ARGB8888, 
-                                               SDL_TEXTUREACCESS_STREAMING, w, h);
+                                               SDL_TEXTUREACCESS_STREAMING, 320, 200);
 }
 
 /*
@@ -199,40 +197,36 @@ void init_screen_melt(void) {
 /*
  * render_screen_melt
  * ------------------
- * Animates the screen melt effect in real time by shifting column slices down the canvas.
- * It tracks column completion and shifts the game state seamlessly once all columns clear.
+ * Animates the screen melt effect inside 320x200.
  */
 void render_screen_melt(SDL_Renderer *ren, int screen_w, int screen_h) {
+    (void)screen_w; (void)screen_h; /* Silence because SDL_RenderSetLogicalSize overrides coordinates */
+    
     int all_done = 1;
-    float col_width = (float)screen_w / (float)MELT_WIDTH;
-    int melt_speed = 20; /* Defines the rate of decay acceleration per frame sweep */
+    int melt_speed = 2; /* Scaled down speed to match the tighter pixel matrix rows */
 
     for (int i = 0; i < MELT_WIDTH; i++) {
-        /* If a column hasn't hit active sliding status yet, advance its trigger delay loop */
         if (g_melt.y_offsets[i] <= 0) {
-            g_melt.y_offsets[i] += 2; 
+            g_melt.y_offsets[i] += 1; 
             all_done = 0;
         } else {
-            /* Accelerate gravity drops down the viewport */
             g_melt.y_offsets[i] += melt_speed;
-            if (g_melt.y_offsets[i] < screen_h) {
-                all_done = 0; /* Keep drawing because columns are still traveling down screen coordinates */
+            if (g_melt.y_offsets[i] < MELT_HEIGHT) {
+                all_done = 0; 
             }
         }
 
         int y_shift = g_melt.y_offsets[i];
         if (y_shift < 0) y_shift = 0;
-        if (y_shift >= screen_h) continue;
+        if (y_shift >= MELT_HEIGHT) continue;
 
-        /* Calculate exact source and destination geometric rect boundaries for rendering blocks */
-        SDL_Rect src_col = { (int)(i * (320.0f / MELT_WIDTH)), 0, 1, MELT_HEIGHT };
-        SDL_Rect dst_col = { (int)(i * col_width), y_shift, (int)ceilf(col_width), screen_h };
+        /* Source and destination map 1:1 since the canvas coordinate logic is locked at 320x200 */
+        SDL_Rect src_col = { i, 0, 1, MELT_HEIGHT };
+        SDL_Rect dst_col = { i, y_shift, 1, MELT_HEIGHT };
 
-        /* Splat the column slice image asset state directly down onto the primary rendering device */
         SDL_RenderCopy(ren, g_title_texture, &src_col, &dst_col);
     }
 
-    /* Once all pixel columns exit off screen bounds limits, drop safely directly into interactive game blocks */
     if (all_done) {
         g_state = STATE_IN_GAME;
     }

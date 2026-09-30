@@ -21,7 +21,8 @@ The GPL virality wound up being a net negative, and more value would
 have come from BSD. My partners would never have gone for it, though."
 - John Carmack, 7/6/2021
 
-Many thanks to the people in CREDITS for their hard work.
+Many thanks to the people in CREDITS (inside of "THIRD-PARTY-NOTICES" folder) for their actual hard work.
+LICENSES TEXT CAN BE FOUND IN "THIRD-PARTY-NOTICES" FOLDER
 
 LICENSING
 ---------
@@ -30,8 +31,6 @@ See the LICENSE file for full details.
 
 FEATURES
 ---------------
-* Clean Modular Tree: Decoupled code structures across isolated implementation
-  files (u_archive.c, i_video.c, i_input.c, p_physics.c, r_main.c, main.c).
 * Hardened WAD Parsing: Fortified binary lump, PLAYPAL, and composite texture 
   loaders built with strict array boundary checks to defensively protect the 
   heap from malformed or corrupted game data loops.

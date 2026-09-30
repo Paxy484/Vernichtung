@@ -38,7 +38,7 @@ into the FreeBSD base operating system layer:
 
 BUILD INSTRUCTIONS (UNIX-LIKE SYSTEMS)
 -------------------------------------------------
-1. Open your terminal environment (Zsh / Bash / sh) inside the root project 
+1. Open your terminal environment inside the root project 
    directory.
 2. Initialize and grant execution permissions to the configuration script:
    
