@@ -1,0 +1,57 @@
+= VERNICHTUNG ENGINE (VERSION 2)
+
+Well, Folks,
+Here it is: Vernichtung at your hands!
+
+== WHAT IS IT?
+Vernichtung is a clean-room reverse-engineered 2.5D software game engine built completely from scratch in portable C and SDL2.
+
+Vernichtung exists to be a completely independent reconstruction of the id Tech 1 architecture released under a fully permissive, non-viral license. (No, I don't hate Copyleft, this is to fulfill John Carmack's and other devs' wishes).
+
+Many thanks to the people in CREDITS (inside of "THIRD-PARTY-NOTICES" folder) for their actual hard work.
+LICENSES TEXT CAN BE FOUND IN "THIRD-PARTY-NOTICES" FOLDER.
+
+== LICENSING
+This engine is officially released under the 3-Clause BSD License.
+See the LICENSE file for full details.
+
+== LIMIT-REMOVING VANILLA
+Vernichtung tries to feel exactly like classic 1993-1994 Doom (with the 35Hz tick timer, player physics, and classic calculations).
+
+But we remove the annoying engine limits:
+
+* *No Visplane Overflows* — We use dynamic heap allocation (malloc) instead of fixed arrays, so the engine won't crash if a map has too many floors.
+* *Hardened Parsing* — We put strict boundary checks on all WAD chunk loaders to protect the heap from crashing if data is jumbled or malformed.
+* *Music Freedom* — Core audio structures are built entirely free from historical 64KB limitations.
+* *Basically, Crispy Doom but with Chocolate Doom gameplay and visuals!*
+
+[NOTE]
+====
+Bad news is there is no "-file" (PWAD) support right now, but I am gonna add that later!
+====
+
+== AUDIO CORE FEATURES
+* *MIDI Music Support* — Dynamic background synth tracking powered by FluidSynth.
+* *MUS2MID Translator* — Embedded clean-room decoder block to translate legacy compressed music lumps into standard Type 0 MIDI arrays on-the-fly.
+* *Unencumbered Linkage* — Utilizing runtime dynamic loading (`dlopen`/`LoadLibraryA`) to check for dependencies without compile-time linkages.
+
+== CURRENT STATUS & ROADMAP
+The core engine loop orchestration, hardware event managers, timing clock gates, and basic visplane flat row-casters are fully operational, linked, and active. You can launch the executable, parse retail IWAD files, see the TITLEPIC, and hear the MIDI music via FluidSynth!
+
+But there is a bug I am stuck on: Vertical perspective texture stretching/distortion that I still have not found the cause of.
+
+Future milestones include a PWAD ("-file") support and so much more!
+Basically, the GOAL of Vernichtung is to make it a drop-in to the DOOM Engine!
+
+== CONTRIBUTING TO VERNICHTUNG
+See the CONTRIBUTING file!
+
+---
+
+And that is all.
+
+I don't know how many people are going to look at Vernichtung, but I think at least one person is going to look at it, which is me!
+
+Ok, sorry, but stay safe out there.
+
+Have fun.

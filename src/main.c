@@ -108,6 +108,12 @@ int load_flats(FILE *file, filelump_t *lumps, int num_lumps);
 int load_wall_textures(FILE *file, filelump_t *lumps, int num_lumps);
 void free_archive_cache(void);
 
+/* Music Layer Hooks (src/i_music.c) */
+int  init_music_subsystem(const char *sf_path);
+void play_music_lump(const uint8_t *lump_data, size_t lump_size);
+void stop_music(void);
+void destroy_music_subsystem(void);
+
 /* Internal Fingerprint Scanner Prototype */
 const char* determine_iwad_fingerprint(filelump_t *directory, int num_lumps);
 
@@ -183,12 +189,19 @@ const char* determine_iwad_fingerprint(filelump_t *directory, int num_lumps) {
 int main(int argc, char *argv[]) {
     srand((unsigned int)time(NULL));
     const char *wad_filename = NULL;
+    const char *sf_filename = NULL; /* Track custom soundfont flag */
 
     /* 1. Parse command-line flags cleanly for asset layer tracking */
     for (int i = 1; i < argc; i++) {
         if (strcasecmp(argv[i], "-iwad") == 0) {
             if (i + 1 < argc) {
                 wad_filename = argv[i + 1];
+                i++;
+            }
+        }
+        else if (strcasecmp(argv[i], "-soundfont") == 0) {
+            if (i + 1 < argc) {
+                sf_filename = argv[i + 1];
                 i++;
             }
         }
@@ -314,15 +327,18 @@ int main(int argc, char *argv[]) {
     g_player_target_z = g_player_z;
 
     /* 7. Initialize OS Video Subsystems via SDL2 API layers */
-    if (SDL_Init(SDL_INIT_VIDEO) < 0) {
+    if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO) < 0) {
         fclose(file); 
         free(directory); 
         return 1;
     }
 
+    /* Fire up dynamic FluidSynth module link contexts */
+    init_music_subsystem(sf_filename);
+
     SDL_Window *win = SDL_CreateWindow("VERNICHTUNG ENGINE", 
                                        SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 
-                                       640, 400, SDL_WINDOW_FULLSCREEN_DESKTOP);
+                                       320, 200, SDL_WINDOW_FULLSCREEN_DESKTOP);
     SDL_Renderer *ren = SDL_CreateRenderer(win, -1, SDL_RENDERER_ACCELERATED);
 
     /* =========================================================================
@@ -333,6 +349,48 @@ int main(int argc, char *argv[]) {
 
     /* Extract title splash using our video wrapper module functions */
     SDL_Texture *title_texture = load_titlepic(ren, file, directory, header.numlumps);
+
+    /* Locate and fire up Title Screen Music (D_DM2TTL for Doom 2, D_INTRO for Doom 1) */
+    int music_idx = -1;
+    for (int i = 0; i < header.numlumps; i++) {
+        char name[9] = {0};
+        memcpy(name, directory[i].name, 8);
+        if (strcmp(name, "D_DM2TTL") == 0 || strcmp(name, "D_INTRO") == 0) {
+            music_idx = i;
+            break;
+        }
+    }
+    if (music_idx != -1) {
+        filelump_t mlump = directory[music_idx];
+        uint8_t *music_raw = malloc(mlump.size);
+        if (music_raw) {
+            long current_pos = ftell(file);
+            fseek(file, mlump.filepos, SEEK_SET);
+            if (fread(music_raw, 1, mlump.size, file) == (size_t)mlump.size) {
+                play_music_lump(music_raw, mlump.size);
+            }
+            free(music_raw);
+            fseek(file, current_pos, SEEK_SET); /* Restore pointer context */
+        }
+    }
+
+    /* =========================================================================
+     * HARDENED METADATA CACHE PROACTIVE STAGE
+     * Cache the in-game level music track bounds before freeing directory!
+     * ========================================================================= */
+    int game_music_idx = -1;
+    for (int i = 0; i < header.numlumps; i++) {
+        char name[9] = {0};
+        memcpy(name, directory[i].name, 8);
+        if (strcmp(name, "D_RUNNIN") == 0 || strcmp(name, "D_E1M1") == 0) {
+            game_music_idx = i;
+            break;
+        }
+    }
+    filelump_t glump = {0};
+    if (game_music_idx != -1) {
+        glump = directory[game_music_idx];
+    }
 
     fclose(file); 
     free(directory);
@@ -370,11 +428,27 @@ int main(int argc, char *argv[]) {
                     SDL_SetRelativeMouseMode(mouse_captured ? SDL_TRUE : SDL_FALSE);
                 }
 
-                // Unified state machine progression routing triggers
+                /* Unified state machine progression routing triggers */
                 if (g_state == STATE_TITLE_SCREEN) {
                     if (event.key.keysym.sym == SDLK_RETURN || event.key.keysym.sym == SDLK_SPACE || event.key.keysym.sym == SDLK_e) {
                         init_screen_melt();
                         g_state = STATE_MELTING;
+
+                        /* Re-open file block momentarily to seek level tracks safely using our cached glump layout details */
+                        if (glump.size > 0) {
+                            FILE *m_file = fopen(wad_filename, "rb");
+                            if (m_file) {
+                                uint8_t *g_music_raw = malloc(glump.size);
+                                if (g_music_raw) {
+                                    fseek(m_file, glump.filepos, SEEK_SET);
+                                    if (fread(g_music_raw, 1, glump.size, m_file) == (size_t)glump.size) {
+                                        play_music_lump(g_music_raw, glump.size);
+                                    }
+                                    free(g_music_raw);
+                                }
+                                fclose(m_file);
+                            }
+                        }
                     }
                 } else if (g_state == STATE_IN_GAME) {
                     if (event.key.keysym.sym == SDLK_e) {
@@ -383,28 +457,28 @@ int main(int argc, char *argv[]) {
                 }
             }
 
-            // Send horizontal mouse displacement ticks straight into the look calculator module (FIXED NESTING)
+            /* Send horizontal mouse displacement ticks straight into the look calculator module (FIXED NESTING) */
             if (event.type == SDL_MOUSEMOTION && mouse_captured && g_state == STATE_IN_GAME) {
                 process_mouse_input(event.motion.xrel);
             }
         }
 
-        // Advance game physics environment parameters if simulation is active (FIXED NESTING)
+        /* Advance game physics environment parameters if simulation is active (FIXED NESTING) */
         if (g_state == STATE_IN_GAME) {
             update_player_physics(keys, mouse_captured);
         }
 
-        // Clear hardware screen context devices before redraw sequences
+        /* Clear hardware screen context devices before redraw sequences */
         SDL_SetRenderDrawColor(ren, 0, 0, 0, 255);
         SDL_RenderClear(ren);
 
-        // Render system graphical arrays based on engine status targets (FIXED NESTING)
+        /* Render system graphical arrays based on engine status targets (FIXED NESTING) */
         if (g_state == STATE_TITLE_SCREEN) {
             if (title_texture) {
                 SDL_RenderCopy(ren, title_texture, NULL, NULL);
             }
         } else if (g_state == STATE_MELTING || g_state == STATE_IN_GAME) {
-            clear_pixel_buffer(0xFF000000); // Wipe software array canvas rows black
+            clear_pixel_buffer(0xFF000000); /* Wipe software array canvas rows black */
             
             /* Reset vertical tracking clipping markers across our 320 columns */
             for (int i = 0; i < 320; i++) {
@@ -431,17 +505,18 @@ int main(int argc, char *argv[]) {
             }
         }
 
-        // Swap double-buffered frame structures to paint the monitor active display panels
+        /* Swap double-buffered frame structures to paint the monitor active display panels */
         SDL_RenderPresent(ren);
 
-        // Enforce absolute classic 35Hz time clock constraints to separate physics simulation speeds from frame rates
+        /* Enforce absolute classic 35Hz time clock constraints to separate physics simulation speeds from frame rates */
         uint32_t frame_time = SDL_GetTicks() - frame_start;
         if (frame_time < FRAME_TIME_MS) {
             SDL_Delay(FRAME_TIME_MS - frame_time);
         }
     }
 
-    // Tear down memory targets and exit libraries cleanly upon terminal signals
+    /* Tear down memory targets and exit libraries cleanly upon terminal signals */
+    destroy_music_subsystem();
     destroy_video_subsystem();
     free_archive_cache();
     free(g_upper_clip);

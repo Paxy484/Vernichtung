@@ -28,30 +28,50 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifndef UNTERGANGDEF_H
-#define UNTERGANGDEF_H
+#ifndef I_MUSIC_H
+#define I_MUSIC_H
 
-#define PI 3.14159f
-#define FOV_BASE 90.0f
-#define EYE_HEIGHT 41.0f
-#define MAX_STEP_HEIGHT 24.0f
-#define GAME_FPS 35
-#define FRAME_TIME_MS (1000 / GAME_FPS)
-#define PLAYER_RADIUS 16.0f
-#define MOUSE_SENSITIVITY 0.15f
+#include <stdint.h>
+#include <stddef.h>
 
-#define UNTERGANG_FRICTION 0.90625f
-#define UNTERGANG_ACCEL    1.8f
-#define GRAVITY            1.2f
+/**
+ * init_music_subsystem
+ * --------------------
+ * Runtime probe that dynamically maps fluid_synth symbols into memory via dlopen/LoadLibrary.
+ * Initializes the synthesis core and loads the user-specified SoundFont patch passed via parameters.
+ *
+ * Parameters:
+ *   sf_path - File path to a valid .sf2 or .sf3 SoundFont bank (passed via -soundfont).
+ *
+ * Returns: 1 if FluidSynth loaded successfully and is ready, 0 for graceful silent fallback.
+ */
+int init_music_subsystem(const char *sf_path);
 
-#define NF_SUBSECTOR 0x8000
-#define MELT_WIDTH   320
-#define MELT_HEIGHT  200
+/**
+ * play_music_lump
+ * ----------------
+ * Automatically checks raw lump data format headers via mus2mid conversion gates, 
+ * performs on-the-fly limit-removed translation if needed, and streams the sequenced 
+ * output directly to FluidSynth.
+ *
+ * Parameters:
+ *   lump_data - Pointer to raw data array extracted from the active IWAD/PWAD file.
+ *   lump_size - Absolute size byte length of the target data buffer.
+ */
+void play_music_lump(const uint8_t *lump_data, size_t lump_size);
 
-typedef enum {
-    STATE_TITLE_SCREEN,
-    STATE_MELTING,
-    STATE_IN_GAME
-} game_state_t;
+/**
+ * stop_music
+ * ----------
+ * Immediately halts active MIDI sequencing threads and resets synth channel states.
+ */
+void stop_music(void);
 
-#endif
+/**
+ * destroy_music_subsystem
+ * -----------------------
+ * Tears down hardware device bindings, unloads structures, and closes the dynamic link handle.
+ */
+void destroy_music_subsystem(void);
+
+#endif /* I_MUSIC_H */

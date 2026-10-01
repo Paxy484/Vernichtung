@@ -1,0 +1,59 @@
+= VERNICHTUNG CONTRIBUTING GUIDE
+
+Hey everyone,
+Thanks for checking out Vernichtung! If you want to help push this project forward, here is what you need to know.
+
+== WHAT IS THE GOAL?
+Vernichtung exists to be a completely independent reconstruction of the id Tech 1 architecture under a permissive, non-viral license.
+
+== LICENSING & COPYLEFT
+This project is officially released under the *3-Clause BSD License*. 
+
+By contributing code, bug fixes, or patches here, you agree that your work will be under the same BSD license context. We do not accept viral copyleft code into the core tree because we want to keep this project completely permissive and fulfill John Carmack's and other developers' structural wishes.
+
+== THE CODE STRUCTURE
+The engine is split into isolated modules so it is easy to navigate:
+
+[cols="1,3", options="header"]
+|===
+
+| Module | Core Purpose / Subsystem responsibilities
+| `u_archive.c` | Hardened WAD loading, parsing, and data flattening.
+| `i_video.c`   | Framebuffers, SDL2 textures, and that cool screen melt.
+| `i_input.c`   | Keyboard inputs and mouse sensitivity handling.
+| `p_physics.c` | Player movement, sliding wall collisions, and stairs.
+| `r_main.c`    | 2.5D software rendering loop and BSP node traversal.
+| `mus2mid.c`   | Clean-room translator expanding legacy DOS audio data.
+| `i_music.c`   | Dynamic dynamic-linking framework handling synth callbacks.
+| `main.c`      | Core loop, timing gates, and engine state orchestration.
+|===
+
+If you add anything, make sure it stays completely modular, includes defensive array boundary checks, and has clean comments to explain your logic!
+
+== AI ASSISTANT & LLM CODE POLICY
+I used AI code as a tool to help make Vernichtung. AI coding is fine, but if you use an AI assistant to help you write patches for this engine, you *MUST* follow my strict rules:
+
+[WARNING]
+.LLM Verification Rules
+====
+1. *Test on Device First* — Test the code on your physical machine first. Do not blind-paste things.
+2. *Real Developers Only* — AI bots are completely banned from signing their own names to commits.
+3. *Manual Peer Review* — A real human (you!) must manually review and understand the code before sending it over.
+4. *Tools, Not Authors* — LLMs are tools, not the developer. You are the developer.
+====
+
+If you don't like AI at all, feel free to fork Vernichtung or block me!
+
+== WHAT NEEDS FIXING/ADDING RIGHT NOW?
+* *Affine Texture Mapping Warp (Perspective Distortion)* — Walls stretch and distort vertically when you get too close or look around, so it is a perfect first issue if you want to tackle the `r_main.c` column math projection scaling!
+* *PWAD Support* — We need `-file` command-line argument mapping to load custom patch WAD directory trees on top of the base game files.
+
+== HOW TO SUBMIT WORK
+1. Fork the repo and make your changes on a branch.
+2. Make sure it compiles with *zero warnings* on GCC or Clang.
+3. Keep your commits clean and explicitly explain what your code updates.
+4. Open a Pull Request if you are in GitHub or Merge Request if you are in GitLab (MR is the GitLab equivalent of a Pull Request).
+
+I don't know how many people are going to contribute, but even small fixes help a ton!
+
+Ok, stay safe out there. Have fun.

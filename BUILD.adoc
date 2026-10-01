@@ -1,0 +1,122 @@
+= VERNICHTUNG COMPILATION TUTORIAL
+
+This guide outlines the system dependencies and compilation procedures required to build the Vernichtung engine from source.
+
+== COMPILATION DEPENDENCIES
+To compile this project, the host operating system must provide:
+
+1. A POSIX-compliant C compiler (`cc` / `clang` / `gcc`)
+2. Standard C runtime headers (`glibc`, `musl`, BSD `libc`, or `ucrt` in Windows)
+3. SDL2 Development Libraries and the `sdl2-config` build utility
+4. FluidSynth Runtime Libraries (Optional for compiling, but required for music playback!)
+
+== DEPENDENCY INSTALLATION
+
+=== Debian / Linux Mint / Ubuntu
+Initialize your system's package management engine and install the universal compilation utilities alongside the SDL2 core and FluidSynth development frameworks:
+
+[source,sh]
+----
+sudo apt update
+sudo apt install build-essential libsdl2-dev fluidsynth libfluidsynth-dev clang
+----
+
+NOTE: `clang` is completely optional, but available in case you prefer it over native `gcc`.
+
+=== Arch Linux
+Synchronize your system's rolling-release core packages and deploy the native `base-devel` toolkit alongside the system SDL2 and FluidSynth tracking libraries:
+
+[source,sh]
+----
+sudo pacman -Syu
+sudo pacman -S base-devel sdl2 fluidsynth clang
+----
+
+NOTE: `clang` is completely optional, but available in case you want to use it.
+
+=== FreeBSD
+Synchronize the native package management database and pull down the system SDL2 and FluidSynth framework layers. The baseline Clang compiler is already built natively into the FreeBSD base operating system layer:
+
+[source,sh]
+----
+sudo pkg update
+sudo pkg install sdl2 fluidsynth
+----
+
+== BUILD INSTRUCTIONS (UNIX-LIKE SYSTEMS)
+
+1. Open your terminal environment inside the root project directory.
+2. Initialize and grant execution permissions to the configuration script:
++
+[source,sh]
+----
+chmod +x ./configure
+----
+
+3. Run the custom POSIX configuration script to probe local system headers, locate the compiler toolchain, verify the synthesizer, and dynamically generate the local `Makefile`:
++
+[source,sh]
+----
+./configure
+----
+
+4. Execute the build automation engine to compile the final binary target:
++
+[source,sh]
+----
+make
+----
+
+5. To wipe compiled object artifacts and restore the source tree to a clean slate:
++
+[source,sh]
+----
+make clean
+----
+
+[TIP]
+====
+*Debugging Builds*: If you are troubleshooting memory faults or want to run the engine inside *GDB* or *LLDB*, you can bypass the standard configuration path and compile with full debugging symbol trackers natively by passing the debug argument parameter:
+`./configure --debug` followed by `make`.
+====
+
+== BUILD INSTRUCTIONS (WINDOWS VIA MSYS2 ENVIRONMENT)
+
+1. Download and initialize the modern MSYS2 environment subsystem.
+2. Select your preferred environment profile window and deploy the corresponding package toolchains via the `pacman` subsystem:
+
+*OPTION A: PURE LLVM / CLANG STACK*
+* Launch the **CLANG64** terminal profile environment window.
+* Synchronize and install the LLVM tools, native SDL2, and FluidSynth libraries:
++
+[source,sh]
+----
+pacman -Syu
+pacman -S mingw-w64-clang-x86_64-toolchain mingw-w64-clang-x86_64-sdl2 mingw-w64-clang-x86_64-fluidsynth
+----
+
+*OPTION B: TRADITIONAL GNU / GCC STACK*
+* Launch the **UCRT64** terminal profile environment window.
+* Synchronize and install the clean runtime GNU tools, native SDL2, and FluidSynth libraries:
++
+[source,sh]
+----
+pacman -Syu
+pacman -S mingw-w64-ucrt-x86_64-toolchain mingw-w64-ucrt-x86_64-sdl2 mingw-w64-ucrt-x86_64-fluidsynth
+----
+
+3. Execute the standard configuration and build sequence inside your project workspace path:
++
+[source,sh]
+----
+./configure
+make
+----
+
+[TIP]
+====
+*Debugging Builds*: If you are troubleshooting memory faults or want to run the engine inside *GDB* or *LLDB*, you can bypass the standard configuration path and compile with full debugging symbol trackers natively by passing the debug argument parameter:
+`./configure --debug` followed by `make`.
+====
+
+The configuration engine will automatically detect the MSYS2 target profile environment and append the native `.exe` file extension to output a clean, standalone, unoptimized 64-bit Windows binary!

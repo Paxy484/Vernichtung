@@ -1,0 +1,38 @@
+= VERNICHTUNG PHILOSOPHY GUIDE
+
+== WHAT IS THE GOAL?
+Vernichtung exists to be a completely independent reconstruction of the id Tech 1 architecture under a permissive, non-viral license. It exists to fulfill John Carmack's and other developers' structural wishes.
+
+If you know **ReactOS**, you know exactly what the goal of Vernichtung is (but built out of pure passion, not out of hate). The absolute goal is to serve as a complete, clean-room drop-in replacement tool for the DOOM Engine!
+
+== THE CLEAN-ROOM STANDARD
+Unlike traditional source ports (such as Chocolate Doom or others) that fork and edit the original 1997 id Software source tree, Vernichtung is built completely from scratch. No, we don't say we hate those source ports—they are fantastic projects.
+
+We only use public specifications and structural WAD documentation to reconstruct the execution engine. Because there is zero original code inside this repository, we can legally fly a fully permissive license without copyright encumbrances.
+
+== LICENSING & THE PRAGMATIC EXCEPTION
+This engine is officially released under the permissive *3-Clause BSD License*. 
+
+We do not accept viral copyleft code into the Vernichtung core repository because we want to keep this project completely permissive and unencumbered for downstream developers.
+
+[IMPORTANT]
+.The Dynamic Linking Exception
+====
+There is a strict, pragmatic architectural exception for two licenses: *LGPL-2.1* and *MPL-2.0*. We allow them *only* via runtime dynamic-linking (`dlopen`/`LoadLibraryA`). 
+
+You cannot use *LGPL-3.0* dependencies inside this ecosystem due to its strict Anti-Tivoization rules, which violate our freedom of deployment.
+====
+
+== LIMIT-REMOVING VANILLA
+Vernichtung tries to feel exactly like classic 1993-1994 Doom (complete with the authentic 35Hz game loop tick timer, player momentum physics, and classic software rendering calculations).
+
+But we remove the annoying engine limits:
+
+* *No Visplane Overflows* — We use dynamic heap allocation (`malloc`) instead of rigid fixed-size arrays, so the engine won't crash if a map layout presents too many intersecting floors or ceilings.
+* *Hardened Parsing* — We implement strict array boundary checks on all WAD chunk loaders to completely protect the heap from crashing if data is jumbled, malformed, or corrupted.
+* *Basically, Crispy Doom but with Chocolate Doom gameplay and visuals!*
+
+== WHY MAKE IT VANILLA FIRST?
+Vernichtung is intentionally locked to Vanilla DOOM parameters because we want to lay down a accurate base first. Once this base is rock-solid, other developers can fork the code and add their own custom features to their engines (like jumping, free-look, or scripting layers)!
+
+And that is all!

@@ -1,28 +1,65 @@
 #!/bin/sh
 
+# Initialize flag state trackers
+DEBUG_MODE="no"
+
+# Pure POSIX argument parser loop
+for arg in "$@"; do
+    case "$arg" in
+        -debug|--debug)
+            DEBUG_MODE="yes"
+            ;;
+        *)
+            echo "[WARNING] Unknown configuration parameter: $arg" >&2
+            ;;
+    esac
+done
+
 CC="cc"
 printf "checking for cc... "
 if command -v cc >/dev/null 2>&1; then
     echo "yes"
 else
     echo "no"
-    echo "[ERROR] System compiler 'cc' not found." >&2
+    echo "[ERROR] System compiler 'cc' not found. How." >&2
+    exit 1
+fi
+
+# Hardened validation tracking check for the system linker tool
+LD="ld"
+printf "checking for ld... "
+if command -v ld >/dev/null 2>&1; then
+    echo "yes"
+else
+    echo "no"
+    echo "[ERROR] linker 'ld' not found. How." >&2
     exit 1
 fi
 
 # 1. Comprehensive validation loop over every single required layout header
-for header in stdio.h stdlib.h stdint.h string.h strings.h math.h time.h SDL2/SDL.h; do
+for header in stdio.h stdlib.h stdint.h string.h strings.h math.h time.h dlfcn.h SDL2/SDL.h; do
     printf "checking for %s... " "$header"
     
     # Check if the system compiler can pre-process the header successfully
     if echo "#include <$header>" | cc -E - >/dev/null 2>&1; then
         echo "yes"
     else
+        # Windows environments natively expose dynamic link APIs without dlfcn.h
+        if [ "$header" = "dlfcn.h" ]; then
+            OS_CHECK=$(uname -s 2>/dev/null || echo "Windows")
+            case "$OS_CHECK" in
+                *MINGW*|*MSYS*|Windows)
+                    echo "no (bypassed for MSYS2)"
+                    continue
+                    ;;
+            esac
+        fi
+
         echo "no"
         echo "[ERROR] Required header dependency <$header> is missing." >&2
         
         if [ "$header" = "SDL2/SDL.h" ]; then
-            echo "[HINT] On Debian-Based system, libsdl2-dev" >&2
+            echo "[HINT] Please ensure the SDL2 development package is installed via your package manager." >&2
         fi
         exit 1
     fi
@@ -51,9 +88,72 @@ else
     esac
 fi
 
+# =========================================================================
+# FLUIDSYNTH SYSTEM PRESENCE RUNTIME PROBE GATES
+# =========================================================================
+printf "checking for fluidsynth runtime library... "
+
+OS_NAME=$(uname -s 2>/dev/null || echo "Windows")
+FLUID_FOUND="no"
+
+case "$OS_NAME" in
+    *MINGW*|*MSYS*|Windows)
+        if [ -f "/${MSYSTEM_PREFIX}/bin/fluidsynth.dll" ] || \
+           [ -f "/${MSYSTEM_PREFIX}/bin/libfluidsynth-3.dll" ] || \
+           [ -f "/${MSYSTEM_PREFIX}/bin/libfluidsynth-2.dll" ]; then
+            FLUID_FOUND="yes"
+        fi
+        ;;
+    *)
+        if [ -f "/usr/lib/x86_64-linux-gnu/libfluidsynth.so.3" ] || \
+           [ -f "/usr/lib/x86_64-linux-gnu/libfluidsynth.so.2" ] || \
+           [ -f "/usr/lib/libfluidsynth.so" ] || \
+           [ -f "/usr/local/lib/libfluidsynth.so" ] || \
+           [ -f "/usr/local/lib/libfluidsynth.so.3" ]; then
+            FLUID_FOUND="yes"
+        fi
+        ;;
+esac
+
+if [ "$FLUID_FOUND" = "yes" ]; then
+    echo "yes"
+else
+    echo "no (bypassed)"
+    echo "==========================================================================="
+    echo " [HINT] FluidSynth library was not detected on your host file paths."
+    echo " Vernichtung will still compile perfectly and run, but music will be silent."
+    echo " To unlock full MIDI playback capabilities, install the library:"
+    case "$OS_NAME" in
+        *MINGW*|*MSYS*|Windows)
+            echo "   UCRT64: pacman -S mingw-w64-ucrt-x86_64-fluidsynth"
+            ;;
+        FreeBSD)
+            echo "   FreeBSD: pkg install fluidsynth"
+            ;;
+        *)
+            echo "   Debian-based: sudo apt install libfluidsynth-dev"
+            ;;
+    esac
+    echo "==========================================================================="
+    
+    # Pause execution dynamically so the user can easily read and copy the commands
+    sleep 5
+    printf "\n"
+fi
+
+# =========================================================================
 # 3. Set final cross-platform flags and target layouts
+# =========================================================================
 EXE=""
-CFLAGS="-Wall -Wextra -Iinclude $SDL_CFLAGS"
+
+# Standard CFLAGS layout entirely clean from any -O2 footprint
+if [ "$DEBUG_MODE" = "yes" ]; then
+    printf "configure: configuring build for DEBUGGING... \n"
+    CFLAGS="-Wall -Wextra -g -O0 -Iinclude $SDL_CFLAGS"
+else
+    CFLAGS="-Wall -Wextra -Iinclude $SDL_CFLAGS"
+fi
+
 LIBS="$SDL_LIBS -lm"
 
 # Append native standalone executable extensions inside Windows environments
@@ -61,6 +161,12 @@ case "$(uname -s 2>/dev/null)" in
     *MINGW*|*MSYS*)
         EXE=".exe"
         LIBS="$LIBS -mwindows"
+        ;;
+    FreeBSD)
+        EXE=""
+        ;;
+    *)
+        LIBS="$LIBS -ldl"
         ;;
 esac
 
@@ -91,6 +197,7 @@ T=$(printf '\t')
 printf "configure: creating Makefile... "
 cat << EOF > Makefile
 CC = $CC
+LD = $LD
 CFLAGS = $CFLAGS
 LIBS = $LIBS
 TARGET = vernichtung$EXE
@@ -120,6 +227,12 @@ ${T}\$(CC) \$(CFLAGS) -c src/p_physics.c -o p_physics.o
 
 r_main.o: src/r_main.c
 ${T}\$(CC) \$(CFLAGS) -c src/r_main.c -o r_main.o
+
+mus2mid.o: src/mus2mid.c
+${T}\$(CC) \$(CFLAGS) -c src/mus2mid.c -o mus2mid.o
+
+i_music.o: src/i_music.c
+${T}\$(CC) \$(CFLAGS) -c src/i_music.c -o i_music.o
 
 clean:
 ${T}rm -f \$(OBJS) \$(TARGET) Makefile
