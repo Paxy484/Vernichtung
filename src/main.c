@@ -37,6 +37,8 @@
 #include <SDL2/SDL.h>
 #include "untergangtype.h"
 
+#define MAX_WAD_FILES 16
+
 /* =========================================================================
  * GLOBAL VARIABLE ENGINE INSTANTIATIONS
  * ========================================================================= */
@@ -81,7 +83,7 @@ game_state_t g_state = STATE_TITLE_SCREEN;
 /* Video Layer Hooks (src/i_video.c) */
 void init_framebuffer(SDL_Renderer *ren, int w, int h);
 void clear_pixel_buffer(uint32_t color);
-SDL_Texture* load_titlepic(SDL_Renderer *ren, FILE *file, filelump_t *lumps, int num_lumps);
+SDL_Texture* load_titlepic(SDL_Renderer *ren, FILE **files, filelump_t *lumps, int num_lumps);
 void init_screen_melt(void);
 void render_screen_melt(SDL_Renderer *ren, int screen_w, int screen_h);
 void destroy_video_subsystem(void);
@@ -103,9 +105,9 @@ untergang_sector_t* get_sector_at_pos(float px, float py);
 void render_bsp_node(SDL_Renderer *ren, uint16_t node_id, float player_rad, float focal_length, int screen_w, int screen_h);
 
 /* Archive Layer Hooks (src/u_archive.c) */
-int load_playpal(FILE *file, filelump_t *lumps, int num_lumps);
-int load_flats(FILE *file, filelump_t *lumps, int num_lumps);
-int load_wall_textures(FILE *file, filelump_t *lumps, int num_lumps);
+int load_playpal(FILE **files, filelump_t *lumps, int num_lumps);
+int load_flats(FILE **files, filelump_t *lumps, int num_lumps);
+int load_wall_textures(FILE **files, filelump_t *lumps, int num_lumps);
 void free_archive_cache(void);
 
 /* Music Layer Hooks (src/i_music.c) */
@@ -189,13 +191,26 @@ const char* determine_iwad_fingerprint(filelump_t *directory, int num_lumps) {
 int main(int argc, char *argv[]) {
     srand((unsigned int)time(NULL));
     const char *wad_filename = NULL;
+    const char *pwad_filenames[MAX_WAD_FILES];
+    int num_pwads = 0;
     const char *sf_filename = NULL; /* Track custom soundfont flag */
+
+    FILE *g_wad_streams[MAX_WAD_FILES];
+    int total_wad_streams = 0;
 
     /* 1. Parse command-line flags cleanly for asset layer tracking */
     for (int i = 1; i < argc; i++) {
         if (strcasecmp(argv[i], "-iwad") == 0) {
             if (i + 1 < argc) {
                 wad_filename = argv[i + 1];
+                i++;
+            }
+        }
+        else if (strcasecmp(argv[i], "-file") == 0) {
+            while (i + 1 < argc && argv[i + 1] != '-') {
+                if (num_pwads < MAX_WAD_FILES) {
+                    pwad_filenames[num_pwads++] = argv[i + 1];
+                }
                 i++;
             }
         }
@@ -209,33 +224,87 @@ int main(int argc, char *argv[]) {
 
     if (!wad_filename) {
         printf("[ERROR] No unencumbered asset archive target specified!\n");
-        printf("Usage: %s -iwad <path/to/game.wad>\n", argv[0]);
+        printf("Usage: %s -iwad <path/to/game.wad> [-file <mod.wad> ...]\n", argv[0]);
         return 1;
     }
 
-    FILE *file = fopen(wad_filename, "rb");
-    if (!file) {
+    FILE *iwad_f = fopen(wad_filename, "rb");
+    if (!iwad_f) {
         printf("[ERROR] Could not open file stream: '%s'\n", wad_filename);
         return 1;
     }
+    g_wad_streams[total_wad_streams++] = iwad_f;
 
-    /* 2. Read WAD master layout headers and load file directories */
-    wadheader_t header;
-    if (fread(&header, sizeof(wadheader_t), 1, file) != 1) {
-        fclose(file); 
-        return 1;
+    /* Load and track supplementary PWAD patches securely */
+    for (int i = 0; i < num_pwads; i++) {
+        FILE *pwad_f = fopen(pwad_filenames[i], "rb");
+        if (!pwad_f) {
+            printf("[WARNING] Could not open optional file patch: '%s'\n", pwad_filenames[i]);
+            continue;
+        }
+
+        wadheader_t pwad_h;
+        if (fread(&pwad_h, sizeof(wadheader_t), 1, pwad_f) == 1) {
+            if (strncmp(pwad_h.identification, "PWAD", 4) == 0 || strncmp(pwad_h.identification, "IWAD", 4) == 0) {
+                g_wad_streams[total_wad_streams++] = pwad_f;
+            } else {
+                printf("[WARNING] File '%s' has unverified markers. Dropping allocation.\n", pwad_filenames[i]);
+                fclose(pwad_f);
+            }
+        } else {
+            fclose(pwad_f);
+        }
     }
 
-    fseek(file, header.infotableofs, SEEK_SET);
-    filelump_t *directory = malloc(sizeof(filelump_t) * header.numlumps);
-    if (fread(directory, sizeof(filelump_t), header.numlumps, file) != (size_t)header.numlumps) {
-        fclose(file); 
-        free(directory); 
-        return 1;
+    /* 2. Read WAD master layout headers and calculate composite lump capacity limits */
+    int total_global_lumps = 0;
+    for (int s = 0; s < total_wad_streams; s++) {
+        wadheader_t sub_h;
+        fseek(g_wad_streams[s], 0, SEEK_SET);
+        if (fread(&sub_h, sizeof(wadheader_t), 1, g_wad_streams[s]) == 1) {
+            total_global_lumps += sub_h.numlumps;
+        }
+    }
+
+    filelump_t *directory = malloc(sizeof(filelump_t) * total_global_lumps);
+    int current_write_lump = 0;
+
+    for (int s = 0; s < total_wad_streams; s++) {
+        wadheader_t sub_h;
+        fseek(g_wad_streams[s], 0, SEEK_SET);
+        if (fread(&sub_h, sizeof(wadheader_t), 1, g_wad_streams[s]) != 1) continue;
+
+        fseek(g_wad_streams[s], sub_h.infotableofs, SEEK_SET);
+        int num_to_read = sub_h.numlumps;
+
+        /* Allocate a temporary staging buffer matching the exact 16-byte disk footprint */
+        wadlump_t *disk_lumps = malloc(sizeof(wadlump_t) * num_to_read);
+        if (!disk_lumps) {
+            printf("[ERROR] Memory allocation failed for temporary WAD directory staging block.\n");
+            free(directory);
+            return 1;
+        }
+
+        if (fread(disk_lumps, sizeof(wadlump_t), num_to_read, g_wad_streams[s]) == (size_t)num_to_read) {
+            for (int l = 0; l < num_to_read; l++) {
+                /* Translate fields safely from the disk layout structure to your runtime memory container */
+                directory[current_write_lump + l].filepos = disk_lumps[l].filepos;
+                directory[current_write_lump + l].size    = disk_lumps[l].size;
+                
+                /* Copy the 8-char identity string and enforce absolute null-safety termination */
+                memcpy(directory[current_write_lump + l].name, disk_lumps[l].name, 8);
+                directory[current_write_lump + l].name[8] = '\0';
+                
+                /* Safely stamp the tracked active file stream index */
+                directory[current_write_lump + l].file_index = s;
+            }
+            current_write_lump += num_to_read;
+        }
+        free(disk_lumps); /* Clean up the temporary staging buffer array */
     }
 
     /* Execute Case-Sensitive Lump Fingerprint check right here! */
-    const char *detected_game = determine_iwad_fingerprint(directory, header.numlumps);
+    const char *detected_game = determine_iwad_fingerprint(directory, total_global_lumps);
 
     /* =========================================================================
      * PRINT VINTAGE STANDALONE CONSOLE SPLASH BANNER
@@ -252,13 +321,13 @@ int main(int argc, char *argv[]) {
     printf("[VERNICHTUNG] Opening asset file stream: %s\n", wad_filename);
 
     /* 3. Invoke archive managers to parse colors and load graphics metadata */
-    load_playpal(file, directory, header.numlumps);
-    load_flats(file, directory, header.numlumps);
-    load_wall_textures(file, directory, header.numlumps);
+    load_playpal(g_wad_streams, directory, total_global_lumps);
+    load_flats(g_wad_streams, directory, total_global_lumps);
+    load_wall_textures(g_wad_streams, directory, total_global_lumps);
 
-    /* 4. Locate initial map data chunk position pointers */
+    /* 4. Locate initial map data chunk position pointers using backwards sweep priority ordering rules */
     int map_idx = -1;
-    for (int i = 0; i < header.numlumps; i++) {
+    for (int i = total_global_lumps - 1; i >= 0; i--) {
         char name[9] = {0};
         strncpy(name, directory[i].name, 8);
         if (strcmp(name, "E1M1") == 0 || strcmp(name, "MAP01") == 0) {
@@ -268,8 +337,8 @@ int main(int argc, char *argv[]) {
     }
 
     if (map_idx == -1) {
-        printf("[ERROR] Initial core map indices (E1M1/MAP01) missing from target archive.\n");
-        fclose(file); 
+        printf("[ERROR] Initial core map indices (E1M1/MAP01) missing from target archives.\n");
+        for (int s = 0; s < total_wad_streams; s++) fclose(g_wad_streams[s]);
         free(directory); 
         return 1;
     }
@@ -287,8 +356,8 @@ int main(int argc, char *argv[]) {
     /* 5. Parse map player start thing coordinate entities */
     int num_things = things_l.size / sizeof(untergang_thing_t);
     untergang_thing_t *things = malloc(things_l.size);
-    fseek(file, things_l.filepos, SEEK_SET);
-    if (fread(things, sizeof(untergang_thing_t), num_things, file) == (size_t)num_things) {
+    fseek(g_wad_streams[things_l.file_index], things_l.filepos, SEEK_SET);
+    if (fread(things, sizeof(untergang_thing_t), num_things, g_wad_streams[things_l.file_index]) == (size_t)num_things) {
         for (int i = 0; i < num_things; i++) {
             if (things[i].type == 1) { /* Type 1 designates Player 1 Spawn Position */
                 g_player_x = (float)things[i].x;
@@ -313,13 +382,13 @@ int main(int argc, char *argv[]) {
     g_num_linedefs = linedefs_l.size / sizeof(untergang_linedef_t);
     g_root_node    = g_num_nodes - 1;
 
-    fseek(file, vertexes_l.filepos, SEEK_SET);  if (fread(g_vertices, 1, vertexes_l.size, file) != (size_t)vertexes_l.size) {}
-    fseek(file, segs_l.filepos, SEEK_SET);      if (fread(g_segs, 1, segs_l.size, file) != (size_t)segs_l.size) {}
-    fseek(file, sectors_l.filepos, SEEK_SET);   if (fread(g_sectors, 1, sectors_l.size, file) != (size_t)sectors_l.size) {}
-    fseek(file, sidedefs_l.filepos, SEEK_SET);  if (fread(g_sidedefs, 1, sidedefs_l.size, file) != (size_t)sidedefs_l.size) {}
-    fseek(file, linedefs_l.filepos, SEEK_SET);  if (fread(g_linedefs, 1, linedefs_l.size, file) != (size_t)linedefs_l.size) {}
-    fseek(file, ssectors_l.filepos, SEEK_SET); if (fread(g_ssectors, 1, ssectors_l.size, file) != (size_t)ssectors_l.size) {}
-    fseek(file, nodes_l.filepos, SEEK_SET);     if (fread(g_nodes, 1, nodes_l.size, file) != (size_t)nodes_l.size) {}
+    fseek(g_wad_streams[vertexes_l.file_index], vertexes_l.filepos, SEEK_SET);  if (fread(g_vertices, 1, vertexes_l.size, g_wad_streams[vertexes_l.file_index]) != (size_t)vertexes_l.size) {}
+    fseek(g_wad_streams[segs_l.file_index], segs_l.filepos, SEEK_SET);      if (fread(g_segs, 1, segs_l.size, g_wad_streams[segs_l.file_index]) != (size_t)segs_l.size) {}
+    fseek(g_wad_streams[sectors_l.file_index], sectors_l.filepos, SEEK_SET);   if (fread(g_sectors, 1, sectors_l.size, g_wad_streams[sectors_l.file_index]) != (size_t)sectors_l.size) {}
+    fseek(g_wad_streams[sidedefs_l.file_index], sidedefs_l.filepos, SEEK_SET);  if (fread(g_sidedefs, 1, sidedefs_l.size, g_wad_streams[sidedefs_l.file_index]) != (size_t)sidedefs_l.size) {}
+    fseek(g_wad_streams[linedefs_l.file_index], linedefs_l.filepos, SEEK_SET);  if (fread(g_linedefs, 1, linedefs_l.size, g_wad_streams[linedefs_l.file_index]) != (size_t)linedefs_l.size) {}
+    fseek(g_wad_streams[ssectors_l.file_index], ssectors_l.filepos, SEEK_SET); if (fread(g_ssectors, 1, ssectors_l.size, g_wad_streams[ssectors_l.file_index]) != (size_t)ssectors_l.size) {}
+    fseek(g_wad_streams[nodes_l.file_index], nodes_l.filepos, SEEK_SET);     if (fread(g_nodes, 1, nodes_l.size, g_wad_streams[nodes_l.file_index]) != (size_t)nodes_l.size) {}
 
     /* Map player height coordinates cleanly to the physical baseline sector deck */
     untergang_sector_t *start_sec = get_sector_at_pos(g_player_x, g_player_y);
@@ -328,7 +397,7 @@ int main(int argc, char *argv[]) {
 
     /* 7. Initialize OS Video Subsystems via SDL2 API layers */
     if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO) < 0) {
-        fclose(file); 
+        for (int s = 0; s < total_wad_streams; s++) fclose(g_wad_streams[s]);
         free(directory); 
         return 1;
     }
@@ -348,11 +417,11 @@ int main(int argc, char *argv[]) {
     SDL_RenderSetLogicalSize(ren, 320, 200); 
 
     /* Extract title splash using our video wrapper module functions */
-    SDL_Texture *title_texture = load_titlepic(ren, file, directory, header.numlumps);
+    SDL_Texture *title_texture = load_titlepic(ren, g_wad_streams, directory, total_global_lumps);
 
     /* Locate and fire up Title Screen Music (D_DM2TTL for Doom 2, D_INTRO for Doom 1) */
     int music_idx = -1;
-    for (int i = 0; i < header.numlumps; i++) {
+    for (int i = total_global_lumps - 1; i >= 0; i--) {
         char name[9] = {0};
         memcpy(name, directory[i].name, 8);
         if (strcmp(name, "D_DM2TTL") == 0 || strcmp(name, "D_INTRO") == 0) {
@@ -364,13 +433,11 @@ int main(int argc, char *argv[]) {
         filelump_t mlump = directory[music_idx];
         uint8_t *music_raw = malloc(mlump.size);
         if (music_raw) {
-            long current_pos = ftell(file);
-            fseek(file, mlump.filepos, SEEK_SET);
-            if (fread(music_raw, 1, mlump.size, file) == (size_t)mlump.size) {
+            fseek(g_wad_streams[mlump.file_index], mlump.filepos, SEEK_SET);
+            if (fread(music_raw, 1, mlump.size, g_wad_streams[mlump.file_index]) == (size_t)mlump.size) {
                 play_music_lump(music_raw, mlump.size);
             }
             free(music_raw);
-            fseek(file, current_pos, SEEK_SET); /* Restore pointer context */
         }
     }
 
@@ -379,7 +446,7 @@ int main(int argc, char *argv[]) {
      * Cache the in-game level music track bounds before freeing directory!
      * ========================================================================= */
     int game_music_idx = -1;
-    for (int i = 0; i < header.numlumps; i++) {
+    for (int i = total_global_lumps - 1; i >= 0; i--) {
         char name[9] = {0};
         memcpy(name, directory[i].name, 8);
         if (strcmp(name, "D_RUNNIN") == 0 || strcmp(name, "D_E1M1") == 0) {
@@ -392,7 +459,6 @@ int main(int argc, char *argv[]) {
         glump = directory[game_music_idx];
     }
 
-    fclose(file); 
     free(directory);
 
     /* Lock down hardware pointer boundaries */
@@ -529,6 +595,12 @@ int main(int argc, char *argv[]) {
     free(g_ssectors);
     free(g_nodes);
     
+    for (int s = 0; s < total_wad_streams; s++) {
+        if (g_wad_streams[s]) {
+            fclose(g_wad_streams[s]);
+        }
+    }
+
     SDL_DestroyRenderer(ren);
     SDL_DestroyWindow(win);
     SDL_Quit();

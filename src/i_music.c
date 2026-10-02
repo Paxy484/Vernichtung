@@ -78,6 +78,7 @@ static int               (*fn_fluid_synth_write_s16)(fluid_synth_t*, int, void*,
 static void              (*fn_delete_fluid_player)(fluid_player_t*) = NULL;
 static void              (*fn_delete_fluid_synth)(fluid_synth_t*) = NULL;
 static void              (*fn_delete_fluid_settings)(fluid_settings_t*) = NULL;
+static int               (*fn_fluid_synth_system_reset)(fluid_synth_t*) = NULL;
 
 /* Sub-system Core Memory Trackers */
 static fluid_settings_t *g_settings        = NULL;
@@ -122,6 +123,7 @@ int init_music_subsystem(const char *sf_path) {
     fn_delete_fluid_player   = (void (*)(fluid_player_t*))dlsym(g_fluid_handle, "delete_fluid_player");
     fn_delete_fluid_synth    = (void (*)(fluid_synth_t*))dlsym(g_fluid_handle, "delete_fluid_synth");
     fn_delete_fluid_settings = (void (*)(fluid_settings_t*))dlsym(g_fluid_handle, "delete_fluid_settings");
+    fn_fluid_synth_system_reset = (int (*)(fluid_synth_t*))dlsym(g_fluid_handle, "fluid_synth_system_reset");
 
     if (!fn_new_fluid_settings || !fn_new_fluid_synth || !fn_new_fluid_player || 
         !fn_fluid_synth_sfload || !fn_fluid_synth_write_s16 || !fn_delete_fluid_player ||
@@ -197,6 +199,10 @@ void play_music_lump(const uint8_t *lump_data, size_t lump_size) {
 
     /* Protect structural background sequencer additions from racing audio hardware threads */
     SDL_LockAudioDevice(g_audio_device);
+
+    if (g_synth && fn_fluid_synth_system_reset) {
+        fn_fluid_synth_system_reset(g_synth);
+    }
 
     g_player = fn_new_fluid_player(g_synth);
     if (g_player) {

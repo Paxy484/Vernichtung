@@ -58,14 +58,14 @@ extern SDL_Color g_palette[256];
  * Reads the global color mapping lump (PLAYPAL) to populate the system RGBA 
  * hardware color table. This table translates 8-bit color indexes into modern colors.
  */
-int load_playpal(FILE *file, filelump_t *lumps, int num_lumps) {
+int load_playpal(FILE **files, filelump_t *lumps, int num_lumps) {
     /* Linearly scan the WAD directory to find the primary game color palette */
     for (int i = 0; i < num_lumps; i++) {
         if (strncmp(lumps[i].name, "PLAYPAL", 7) == 0) {
             /* Seek straight to the raw binary RGB spectrum bytes on disk */
-            fseek(file, lumps[i].filepos, SEEK_SET);
+            fseek(files[lumps[i].file_index], lumps[i].filepos, SEEK_SET);
             uint8_t raw_rgb[768]; /* 256 colors * 3 bytes (R, G, B) */
-            if (fread(raw_rgb, 1, 768, file) != 768) return 0;
+            if (fread(raw_rgb, 1, 768, files[lumps[i].file_index]) != 768) return 0;
 
             /* Unpack the raw 8-bit channels into hardware-compatible SDL structures */
             for (int p = 0; p < 256; p++) {
@@ -86,7 +86,7 @@ int load_playpal(FILE *file, filelump_t *lumps, int num_lumps) {
  * Loads all raw 64x64 flat textures (floors/ceilings) trapped between design 
  * memory stream boundary markers (F_START/F_END or FF_START/FF_END).
  */
-int load_flats(FILE *file, filelump_t *lumps, int num_lumps) {
+int load_flats(FILE **files, filelump_t *lumps, int num_lumps) {
     int f_start = -1, f_end = -1;
     
     /* Locate the beginning and ending structural tracking nodes for flats */
@@ -115,9 +115,8 @@ int load_flats(FILE *file, filelump_t *lumps, int num_lumps) {
         if (lumps[i].size == 4096) {
             memset(g_flats[idx].name, 0, 9);
             strncpy(g_flats[idx].name, lumps[i].name, 8);
-            
-            fseek(file, lumps[i].filepos, SEEK_SET);
-            if (fread(g_flats[idx].pixels, 1, 4096, file) != 4096) {
+            fseek(files[lumps[i].file_index], lumps[i].filepos, SEEK_SET);
+            if (fread(g_flats[idx].pixels, 1, 4096, files[lumps[i].file_index]) != 4096) {
                 // Keep moving if a single texture block read hits a limit stub
             }
             idx++;
@@ -149,7 +148,7 @@ uint8_t* get_flat_data(const char *name) {
  * Resolves multiple compound patch structures out of the composite map tables 
  * (PNAMES + TEXTURE1/TEXTURE2) to assemble fully expanded linear wall textures into memory.
  */
-int load_wall_textures(FILE *file, filelump_t *lumps, int num_lumps) {
+int load_wall_textures(FILE **files, filelump_t *lumps, int num_lumps) {
     int pnames_idx = -1;
     
     /* 1. Extract the primary master directory index mapping patch string names */
@@ -161,13 +160,13 @@ int load_wall_textures(FILE *file, filelump_t *lumps, int num_lumps) {
     }
     if (pnames_idx == -1) return 0;
 
-    fseek(file, lumps[pnames_idx].filepos, SEEK_SET);
+    fseek(files[lumps[pnames_idx].file_index], lumps[pnames_idx].filepos, SEEK_SET);
     int32_t num_pnames = 0;
-    if (fread(&num_pnames, 4, 1, file) != 1) return 0;
+    if (fread(&num_pnames, 4, 1, files[lumps[pnames_idx].file_index]) != 1) return 0;
 
     /* Pull the full array of raw patch name blocks into a dynamic staging buffer */
     char (*pnames)[8] = malloc(num_pnames * 8);
-    if (fread(pnames, 8, num_pnames, file) != (size_t)num_pnames) {
+    if (fread(pnames, 8, num_pnames, files[lumps[pnames_idx].file_index]) != (size_t)num_pnames) {
         free(pnames);
         return 0;
     }
@@ -186,8 +185,8 @@ int load_wall_textures(FILE *file, filelump_t *lumps, int num_lumps) {
 
         /* Extract the full raw mapping block table into RAM for quick layout processing */
         uint8_t *tdata = malloc(lumps[tex_lump_idx].size);
-        fseek(file, lumps[tex_lump_idx].filepos, SEEK_SET);
-        if (fread(tdata, 1, lumps[tex_lump_idx].size, file) != (size_t)lumps[tex_lump_idx].size) {
+        fseek(files[lumps[tex_lump_idx].file_index], lumps[tex_lump_idx].filepos, SEEK_SET);
+        if (fread(tdata, 1, lumps[tex_lump_idx].size, files[lumps[tex_lump_idx].file_index]) != (size_t)lumps[tex_lump_idx].size) {
             free(tdata);
             continue;
         }
@@ -238,8 +237,8 @@ int load_wall_textures(FILE *file, filelump_t *lumps, int num_lumps) {
 
                 /* Pull the individual picture patch into an isolated buffer array */
                 uint8_t *patch_data = malloc(lumps[p_lump_idx].size);
-                fseek(file, lumps[p_lump_idx].filepos, SEEK_SET);
-                if (fread(patch_data, 1, lumps[p_lump_idx].size, file) != (size_t)lumps[p_lump_idx].size) {
+                fseek(files[lumps[p_lump_idx].file_index], lumps[p_lump_idx].filepos, SEEK_SET);
+                if (fread(patch_data, 1, lumps[p_lump_idx].size, files[lumps[p_lump_idx].file_index]) != (size_t)lumps[p_lump_idx].size) {
                     free(patch_data);
                     continue;
                 }

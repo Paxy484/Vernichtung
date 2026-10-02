@@ -28,6 +28,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
+
 #ifndef UNTERGANGTYPE_H
 #define UNTERGANGTYPE_H
 
@@ -44,11 +45,12 @@ typedef struct {
     int32_t infotableofs;
 } wadheader_t;
 
+/* This structure matches the exact 16-byte id Software binary specification on disk */
 typedef struct {
     int32_t filepos;
     int32_t size;
     char name[8];
-} filelump_t;
+} wadlump_t;
 
 typedef struct {
     uint16_t width;
@@ -99,6 +101,14 @@ typedef struct {
 } untergang_node_t;
 
 #pragma pack(pop)
+
+/* Internal Engine Runtime Struct - Free from file alignment padding restrictions */
+typedef struct {
+    int32_t filepos;
+    int32_t size;
+    char name[9];       /* Expanded to 9 elements for safe string null termination */
+    int32_t file_index;  /* Clean tracking marker pointing back to g_wad_streams */
+} filelump_t;
 
 typedef struct {
     char name[9];

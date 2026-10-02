@@ -1,0 +1,55 @@
+.TH VERNICHTUNG 6 "Version 2.34 Alpha" "VERNICHTUNG USER MANUAL"
+.SH NAME
+vernichtung \- A clean-room, limit-removing drop-in replacement software engine for classic 2.5D WAD games
+.SH SYNOPSIS
+.B vernichtung
+.BI \-iwad \ <BASE_WAD>
+[\fB\-soundfont\fP \fI<SF2_FILE>\fP]
+[\fB\-file\fP \fI<MOD_WAD>...\fP]
+.SH DESCRIPTION
+.B vernichtung
+is a clean-room, reverse-engineered 2.5D software game engine built completely from scratch in portable C and SDL2.
+.PP
+Unlike traditional source ports that fork the historical 1997 id Software release tree,
+.B vernichtung
+was developed purely from public layout specifications and structural documentation. This provides a legally unencumbered, binary-compatible runtime tool environment released under the permissive 3-Clause BSD License.
+.PP
+The engine delivers a highly faithful emulation of classic 1993\-1994 gameplay parameters (enforcing the authentic 35Hz simulation timing clock grid, player momentum matrices, and continuous flat visplane row\-casting) while actively stripping away legacy engine overflows:
+.TP
+.BR \(bu
+.B No Visplane Crashes
+\(em Dynamic allocation arrays replaces rigid static bounds buffers, ensuring massive community map architectures do not crash the runtime engine.
+.TP
+.BR \(bu
+.B Hardened Boundary Defenses
+\(em Direct memory loader operations validate stream structures, neutralizing corrupt or malformed asset entries before they damage the heap context.
+.TP
+.BR \(bu
+.B Dynamic Library Firewalls
+\(em Heavy audio synthesis frameworks (like FluidSynth) are unmapped from compile-time link matrices, isolation\-loaded via dlopen(3) or LoadLibraryA runtime handles to preserve downstream software freedom.
+.SH OPTIONS
+.TP
+.BI \-iwad \ <BASE_WAD>
+Specifies the primary, standalone internal game asset base file (e.g., \fIfreedoom2.wad\fP). This engine scanning layer verifies that the archive starts with explicit "IWAD" binary signature markers before initializing memory structures. This parameter is mandatory.
+.TP
+.BI \-file \ <MOD_WAD>...
+Appends one or more custom patch assets or level expansion files (PWADs) sequentially into the engine's master global index dictionary map layout. Records loaded from subsequent archives override duplicate stock base game assets using a reverse-priority lookup queue, making it a seamless drop-in tool for community modifications.
+.TP
+.BI \-soundfont \ <SF2_FILE>
+Forces the runtime dynamic synth tracking layers to load an explicit external SF2 instrument pack layout patch profile (such as \fIRoland SC-55\fP) into the synthesizer matrix context, overriding default operating system backend sound definitions.
+.SH EXIT STATUS
+.TP
+.B 0
+Success. The engine loop winddown sequences terminated without exceptions.
+.TP
+.B 1
+Failure. A structural asset parameter was missing or memory alignment checks encountered fatal issues.
+.SH BUGS
+The engine software rasterizer is currently affected by a non\-linear vertical perspective projection texturing column interpolation scale distortion. Walls may display elastic stretching scaling behaviors when inspected closely or during rapid camera rotation frames. Floor and ceiling flat visplanes map rock\-solidly and are completely unaffected.
+Basically, there too many bugs.
+.SH AUTHORS
+Written by Rafael Peixoto.
+.SH SEE ALSO
+.BR chocolatedoom (6),
+.BR crispydoom (6),
+.BR sdl2-config (1)

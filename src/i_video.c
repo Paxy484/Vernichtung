@@ -109,22 +109,31 @@ void clear_pixel_buffer(uint32_t color) {
  *
  * Returns: A pointer to a compiled SDL_Texture if successful, or NULL if asset bounds check fails.
  */
-SDL_Texture* load_titlepic(SDL_Renderer *ren, FILE *file, filelump_t *lumps, int num_lumps) {
+SDL_Texture* load_titlepic(SDL_Renderer *ren, FILE **files, filelump_t *lumps, int num_lumps) {
     filelump_t *title_lump = NULL;
     
     /* Search the asset table array linearly for the exact title screen identifier match */
-    for (int i = 0; i < num_lumps; i++) {
+    int titlepic_idx = -1;
+    
+    /* Sweep BACKWARDS to find the custom PWAD mod entry first */
+    for (int i = num_lumps - 1; i >= 0; i--) {
         if (strncmp(lumps[i].name, "TITLEPIC", 8) == 0) {
-            title_lump = &lumps[i];
+            titlepic_idx = i;
             break;
         }
     }
-    if (!title_lump) return NULL;
+    if (titlepic_idx == -1) return NULL;
+
+    /* Extract the specific lump entry configuration pointer */
+    title_lump = &lumps[titlepic_idx];
+
+    /* Resolve the precise dynamic stream file pointer using your file_index tag */
+    FILE *target_stream = files[title_lump->file_index];
 
     /* Allocate a staging frame array buffer to pull raw bytes directly out of disk storage */
     uint8_t *patch_data = (uint8_t*)malloc(title_lump->size);
-    fseek(file, title_lump->filepos, SEEK_SET);
-    if (fread(patch_data, 1, title_lump->size, file) != (size_t)title_lump->size) {
+    fseek(target_stream, title_lump->filepos, SEEK_SET);
+    if (fread(patch_data, 1, title_lump->size, target_stream) != (size_t)title_lump->size) {
         free(patch_data);
         return NULL;
     }
