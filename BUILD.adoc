@@ -1,6 +1,6 @@
 = VERNICHTUNG COMPILATION TUTORIAL
 
-This guide outlines the system dependencies and compilation procedures required to build the Vernichtung engine from source.
+This guide outlines the system dependencies, compilation procedures, and portable distribution techniques required to build and bundle the Vernichtung engine from source.
 
 == COMPILATION DEPENDENCIES
 To compile this project, the host operating system must provide:
@@ -120,3 +120,51 @@ make
 ====
 
 The configuration engine will automatically detect the MSYS2 target profile environment and append the native `.exe` file extension to output a clean, standalone, unoptimized 64-bit Windows binary!
+
+== CREATING PORTABLE DISTRIBUTIONS
+
+Vernichtung supports standalone, portable distribution profiles. The engine's runtime architecture can look for its dynamic link dependencies locally rather than hunting across global system root directories. 
+
+[IMPORTANT]
+====
+*System Library Rule*: Never copy core operational runtime components such as `libc` or `libm` into a local distribution folder. Doing so will bypass native kernel links and crash the target machine. Only bundle standalone third-party dependencies (like `SDL2` and `FluidSynth`).
+====
+
+=== Windows Bundle Optimization
+Windows naturally prioritizes locating dynamic links in the root file execution tree right next to the executable. You can automate capturing these file dependencies inside your **MSYS2 UCRT64** terminal space:
+
+[source,sh]
+----
+# 1. Traces and lists active third-party library dependencies 
+ntldd -R vernichtung.exe | grep -i ucrt64
+
+# 2. Automated one-liner to copy required DLLs directly next to your binary
+for dll in \$(ntldd -R vernichtung.exe | grep -i ucrt64 | awk '{print \$3}'); do cp -n "\$dll" . ; done
+----
+
+=== Linux and FreeBSD Bundle Optimization
+The Vernichtung build system utilizes custom relative runtime path headers (`RPATH`). On Unix-like systems, the engine explicitly searches for portable libraries inside a subdirectory named `lib/` relative to the game's executable path.
+
+==== Debian / Linux Mint / Ubuntu / Arch Linux (glibc)
+Run this command loop inside a glibc terminal to generate your local `lib/` directory and extract portable shared objects automatically:
+
+[source,sh]
+----
+mkdir -p lib && for so in \$(ldd vernichtung | grep "=>" | grep -vE "(libc\.so|libm\.so|libdl\.so|pthread)" | awk '{print \$3}'); do cp -n "\$so" lib/; done
+----
+
+==== FreeBSD
+Run this command pipeline inside the FreeBSD workspace shell to automatically parse its unique system formatting headers and capture dependencies:
+
+[source,sh]
+----
+mkdir -p lib && for so in \$(ldd vernichtung | grep "=>" | grep -vE "(libc\.so|libm\.so|thr)" | awk '{print \$3}'); do cp -n "\$so" lib/; done
+----
+
+==== musl environments (Alpine Linux / Void Linux musl)
+If compiling inside an independent, lightweight `musl-libc` workspace profile, execute this tailored POSIX string structure:
+
+[source,sh]
+----
+mkdir -p lib && for so in \$(ldd vernichtung | grep -vE "(libc\.musl|ld-musl)" | awk '{print \$3}'); do [ -f "\(so" ] && cp -n "\)so" lib/; done
+----

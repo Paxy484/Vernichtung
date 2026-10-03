@@ -41,7 +41,7 @@ for header in stdio.h stdlib.h stdint.h string.h strings.h math.h time.h dlfcn.h
     printf "checking for %s... " "$header"
     
     # Check if the system compiler can pre-process the header successfully
-    if echo "#include <$header>" | cc -E - >/dev/null 2>&1; then
+    if echo "#include <$header>" | "$CC" -E - >/dev/null 2>&1; then
         echo "yes"
     else
         # Windows environments natively expose dynamic link APIs without dlfcn.h
@@ -96,24 +96,9 @@ printf "checking for fluidsynth runtime library... "
 OS_NAME=$(uname -s 2>/dev/null || echo "Windows")
 FLUID_FOUND="no"
 
-case "$OS_NAME" in
-    *MINGW*|*MSYS*|Windows)
-        if [ -f "/${MSYSTEM_PREFIX}/bin/fluidsynth.dll" ] || \
-           [ -f "/${MSYSTEM_PREFIX}/bin/libfluidsynth-3.dll" ] || \
-           [ -f "/${MSYSTEM_PREFIX}/bin/libfluidsynth-2.dll" ]; then
-            FLUID_FOUND="yes"
-        fi
-        ;;
-    *)
-        if [ -f "/usr/lib/x86_64-linux-gnu/libfluidsynth.so.3" ] || \
-           [ -f "/usr/lib/x86_64-linux-gnu/libfluidsynth.so.2" ] || \
-           [ -f "/usr/lib/libfluidsynth.so" ] || \
-           [ -f "/usr/local/lib/libfluidsynth.so" ] || \
-           [ -f "/usr/local/lib/libfluidsynth.so.3" ]; then
-            FLUID_FOUND="yes"
-        fi
-        ;;
-esac
+if echo "int main(void){return 0;}" | "$CC" -x c - -lfluidsynth -o /dev/null >/dev/null 2>&1; then
+    FLUID_FOUND="yes"
+fi
 
 if [ "$FLUID_FOUND" = "yes" ]; then
     echo "yes"
@@ -156,17 +141,20 @@ fi
 
 LIBS="$SDL_LIBS -lm"
 
-# Append native standalone executable extensions inside Windows environments
+# FIXED: Appends modern cross-platform relative runtime path headers.
+# This makes Unix binaries seek a local "lib/" subdirectory right where the executable sits.
 case "$(uname -s 2>/dev/null)" in
     *MINGW*|*MSYS*)
         EXE=".exe"
         LIBS="$LIBS -mwindows"
         ;;
     FreeBSD)
-        EXE=""
+        # FreeBSD handles origin tokens gracefully via standard rpath parameters
+        LIBS="$LIBS -Wl,-rpath,\$ORIGIN/lib"
         ;;
     *)
-        LIBS="$LIBS -ldl"
+        # Linux requires explicitly passing dlOpen libraries and local rpath settings
+        LIBS="$LIBS -ldl -Wl,-rpath,\$ORIGIN/lib"
         ;;
 esac
 
@@ -235,8 +223,11 @@ i_music.o: src/i_music.c
 ${T}\$(CC) \$(CFLAGS) -c src/i_music.c -o i_music.o
 
 clean:
-${T}rm -f \$(OBJS) \$(TARGET) Makefile
+${T}rm -f \$(OBJS) \$(TARGET)
 
-.PHONY: all clean
+distclean: clean
+${T}rm -f Makefile
+
+.PHONY: all clean distclean
 EOF
 echo "done"
