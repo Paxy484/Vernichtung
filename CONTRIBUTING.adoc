@@ -11,6 +11,14 @@ This project is officially released under the *3-Clause BSD License*.
 
 By contributing code, bug fixes, or patches here, you agree that your work will be under the same BSD license context. We do not accept viral copyleft code into the core tree because we want to keep this project completely permissive and fulfill John Carmack's and other developers' structural wishes.
 
+[IMPORTANT]
+.ABOUT COPYLEFT
+====
+There is a strict, exception for two licenses: *LGPL-2.1* and *MPL-2.0*. We allow them *only* via runtime dynamic-linking (`dlopen`/`LoadLibraryA`). 
+
+You cannot use *LGPL-3.0* dependencies inside this ecosystem due to its strict Anti-Tivoization rules, which violate our freedom of deployment.
+====
+
 == THE CODE STRUCTURE
 The engine is split into isolated modules so it is easy to navigate:
 
@@ -46,7 +54,7 @@ If you don't like AI at all, feel free to fork Vernichtung or block me!
 
 == WHAT NEEDS FIXING/ADDING RIGHT NOW?
 * *Affine Texture Mapping Warp (Perspective Distortion)* — Walls stretch and distort vertically when you get too close or look around, so it is a perfect first issue if you want to tackle the `r_main.c` column math projection scaling!
-* *PWAD Support* — We need `-file` command-line argument mapping to load custom patch WAD directory trees on top of the base game files.
+MIDI Note Bleed in PWAD but not IWAD for some reason
 
 == HOW TO SUBMIT WORK
 1. Fork the repo and make your changes on a branch.

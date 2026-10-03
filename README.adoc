@@ -1,4 +1,4 @@
-= VERNICHTUNG ENGINE (VERSION 2)
+= VERNICHTUNG ENGINE (VERSION 2.34 Alpha)
 
 Well, Folks,
 Here it is: Vernichtung at your hands!
@@ -25,11 +25,6 @@ But we remove the annoying engine limits:
 * *Music Freedom* — Core audio structures are built entirely free from historical 64KB limitations.
 * *Basically, Crispy Doom but with Chocolate Doom gameplay and visuals!*
 
-[NOTE]
-====
-Bad news is there is no "-file" (PWAD) support right now, but I am gonna add that later!
-====
-
 == AUDIO CORE FEATURES
 * *MIDI Music Support* — Dynamic background synth tracking powered by FluidSynth.
 * *MUS2MID Translator* — Embedded clean-room decoder block to translate legacy compressed music lumps into standard Type 0 MIDI arrays on-the-fly.
@@ -37,10 +32,11 @@ Bad news is there is no "-file" (PWAD) support right now, but I am gonna add tha
 
 == CURRENT STATUS & ROADMAP
 The core engine loop orchestration, hardware event managers, timing clock gates, and basic visplane flat row-casters are fully operational, linked, and active. You can launch the executable, parse retail IWAD files, see the TITLEPIC, and hear the MIDI music via FluidSynth!
+And you can even play PWADS now via "-file" parameter! (kinda)
 
-But there is a bug I am stuck on: Vertical perspective texture stretching/distortion that I still have not found the cause of.
+But there is a bug I am stuck on: Vertical perspective texture stretching/distortion that I still have not found the cause of and MIDI Note Bleed in PWAD and not IWAD for some reason
 
-Future milestones include a PWAD ("-file") support and so much more!
+Future milestones include a ton of shit!
 Basically, the GOAL of Vernichtung is to make it a drop-in to the DOOM Engine!
 
 == CONTRIBUTING TO VERNICHTUNG
